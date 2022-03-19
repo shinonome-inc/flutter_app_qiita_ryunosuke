@@ -22,10 +22,10 @@ class TopPage extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 170.0),
             child: Center(
               child: Column(
                 children: [
+                  Expanded(flex: 3, child: Container()),
                   Text(
                     'Qiita Feed App',
                     style: GoogleFonts.pacifico(
