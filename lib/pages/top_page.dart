@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-
 class TopPage extends StatelessWidget {
   const TopPage({Key? key}) : super(key: key);
 
@@ -20,6 +19,10 @@ class TopPage extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
+          ),
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.2),),
           ),
           Center(
             child: Column(
