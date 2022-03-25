@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_qiita/pages/feed_page.dart';
+
+
+import 'bottom_navigationbar/bottom_navigationbar.dart';
 
 
 void main() => runApp(
-      const MaterialApp(
-        home: FeedPage(),
+       const MaterialApp(
+        home: BottomBar(),
       ),
     );
