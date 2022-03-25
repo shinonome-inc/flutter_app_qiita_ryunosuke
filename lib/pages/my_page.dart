@@ -10,9 +10,7 @@ class Mypage extends StatefulWidget {
 class _MypageState extends State<Mypage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return  Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           bottomOpacity: 0.0,
@@ -34,7 +32,6 @@ class _MypageState extends State<Mypage> {
           ),
         ),
         body: Container(),
-      ),
-    );
+      );
   }
 }

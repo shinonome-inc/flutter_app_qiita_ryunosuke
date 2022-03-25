@@ -7,14 +7,14 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../pages/setting_page.dart';
 
-class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key}) : super(key: key);
+class BottomNavigation extends StatefulWidget {
+  const BottomNavigation({Key? key}) : super(key: key);
 
   @override
-  _BottomBarState createState() => _BottomBarState();
+  _BottomNavigationState createState() => _BottomNavigationState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-
-
-import 'bottom_navigationbar/bottom_navigationbar.dart';
-
+import 'bottom_navigationbar/bottom_navigation.dart';
 
 void main() => runApp(
-       const MaterialApp(
-        home: BottomBar(),
+      const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: BottomNavigation(),
       ),
     );
