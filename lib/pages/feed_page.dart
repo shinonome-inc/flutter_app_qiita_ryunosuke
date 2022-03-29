@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/article_list_view.dart';
 import 'package:flutter_app_qiita/service/qiita_client.dart';
+
 import '../components/appbar_design.dart';
 import '../models/article.dart';
 
 class FeedPage extends StatefulWidget {
-
   const FeedPage({Key? key}) : super(key: key);
 
   @override
   _FeedPageState createState() => _FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage>{
+class _FeedPageState extends State<FeedPage> {
   List<Article> articles = [];
   Widget textField() {
     return Container(
@@ -33,9 +33,9 @@ class _FeedPageState extends State<FeedPage>{
     );
   }
 
-   Future<void> initArticle() async {
-     articles = await QiitaClient.fetchArticle();
-   }
+  Future<void> initArticle() async {
+    articles = await QiitaClient.fetchArticle();
+  }
 
   @override
   void initState() {
@@ -53,11 +53,10 @@ class _FeedPageState extends State<FeedPage>{
           children: [
             textField(),
             const Divider(color: Colors.black),
-            ArticleListView(articles: articles,),
+            ArticleListView(articles: articles),
           ],
         ),
       ),
     );
   }
 }
-
