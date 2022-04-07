@@ -5,19 +5,24 @@ import 'package:intl/intl.dart';
 
 import '../models/article.dart';
 
-class ArticleListView extends StatelessWidget {
+class ArticleListView extends StatefulWidget {
   final List<Article> articles;
 
   const ArticleListView({Key? key, required this.articles}) : super(key: key);
 
   @override
+  State<ArticleListView> createState() => _ArticleListViewState();
+}
+
+class _ArticleListViewState extends State<ArticleListView> {
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
         shrinkWrap: true,
-        itemCount: articles.length,
+        itemCount: widget.articles.length,
         itemBuilder: (BuildContext context, int index) {
-          final article = articles[index];
+          final article = widget.articles[index];
           DateTime dateTime = DateTime.parse(article.createdAt);
           return ListTile(
             leading: CachedNetworkImage(
@@ -34,7 +39,9 @@ class ArticleListView extends StatelessWidget {
                 ),
               ),
               placeholder: (context, url) => const CupertinoActivityIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
+              errorWidget: (context, url, error) => const Image(
+                image: AssetImage('images/default_icon_image'),
+              ),
             ),
             title: Text(
               article.title,

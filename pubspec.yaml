@@ -39,6 +39,7 @@ flutter:
   assets:
     - images/qiita.png
     - images/network_error.png
+    - images/default_icon_image.png
 
 
 

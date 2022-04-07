@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:flutter_app_qiita/components/article_list_view.dart';
 import 'package:flutter_app_qiita/service/qiita_client.dart';
 
-import '../components/appbar_design.dart';
 import '../models/article.dart';
 import 'error_page.dart';
 
@@ -16,6 +16,9 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   List<Article> articles = [];
+
+  bool isNetworkError = false;
+
   Widget textField() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -35,8 +38,29 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
+  PreferredSize? feedAppBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(100),
+      child: Center(
+        child: Column(
+          children: [
+            AppBarDesign(text: 'Feed'),
+            textField(),
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<void> initArticle() async {
     articles = await QiitaClient.fetchArticle();
+  }
+
+  Future<void> reloadArticle() async {
+    initArticle();
+    setState(() {
+      ArticleListView(articles: articles);
+    });
   }
 
   @override
@@ -48,16 +72,15 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarDesign(text: 'Feed'),
+      appBar: feedAppBar(),
       body: Container(
         color: Colors.white,
         child: FutureBuilder<List>(
           future: QiitaClient.fetchArticle(),
-          builder: (context, snapshot) {
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               return Column(
                 children: [
-                  textField(),
                   const Divider(color: Colors.black),
                   ArticleListView(articles: articles),
                 ],
@@ -65,10 +88,7 @@ class _FeedPageState extends State<FeedPage> {
             } else if (snapshot.hasError) {
               return ErrorPage(
                 onTapReload: () {
-                  setState(() {
-                    initArticle();
-                    ArticleListView(articles: articles);
-                  });
+                  reloadArticle();
                 },
               );
             } else {
