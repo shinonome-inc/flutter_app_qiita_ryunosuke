@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import '../models/article.dart';
 
 class ArticleListView extends StatefulWidget {
-  final List<Article> articles;
+  final Future<List<Article>> articles;
 
   const ArticleListView({Key? key, required this.articles}) : super(key: key);
 
@@ -17,11 +17,11 @@ class ArticleListView extends StatefulWidget {
 class _ArticleListViewState extends State<ArticleListView> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: widget.articles.length,
-        itemBuilder: (BuildContext context, int index) {
+        itemBuilder: (context, index) {
           final article = widget.articles[index];
           DateTime dateTime = DateTime.parse(article.createdAt);
           return ListTile(

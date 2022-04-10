@@ -15,10 +15,7 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  List<Article> articles = [];
-
-  bool isNetworkError = false;
-
+  late Future<List<Article>> articles;
   Widget textField() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -53,7 +50,7 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Future<void> initArticle() async {
-    articles = await QiitaClient.fetchArticle();
+    articles = QiitaClient.fetchArticle();
   }
 
   Future<void> reloadArticle() async {
@@ -65,7 +62,7 @@ class _FeedPageState extends State<FeedPage> {
 
   @override
   void initState() {
-    initArticle();
+    articles = QiitaClient.fetchArticle();
     super.initState();
   }
 
@@ -76,8 +73,8 @@ class _FeedPageState extends State<FeedPage> {
       body: Container(
         color: Colors.white,
         child: FutureBuilder<List>(
-          future: QiitaClient.fetchArticle(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          future: articles,
+          builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Column(
                 children: [
