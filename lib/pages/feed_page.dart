@@ -50,7 +50,7 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Future<void> reloadArticle() async {
+  void reloadArticle() {
     setState(() {
       futureArticles = QiitaClient.fetchArticle();
     });
