@@ -50,10 +50,6 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Future<void> initArticle() async {
-    articles = await QiitaClient.fetchArticle();
-  }
-
   Future<void> reloadArticle() async {
     setState(() {
       futureArticles = QiitaClient.fetchArticle();
@@ -87,8 +83,6 @@ class _FeedPageState extends State<FeedPage> {
               return ErrorPage(
                 onTapReload: () {
                   reloadArticle();
-                  articles = snapshot.data! as List<Article>;
-                  ArticleListView(articles: articles);
                 },
               );
             } else {
