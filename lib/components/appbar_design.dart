@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppBarDesign extends StatelessWidget with PreferredSizeWidget {
-
   final String text;
 
   AppBarDesign({required this.text, Key? key}) : super(key: key);
@@ -23,6 +22,7 @@ class AppBarDesign extends StatelessWidget with PreferredSizeWidget {
       ),
     );
   }
+
   @override
   Size get preferredSize => const Size.fromHeight(55.0);
 }
