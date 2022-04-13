@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import '../models/article.dart';
 
 class ArticleListView extends StatefulWidget {
-  final Future<List<Article>> articles;
+  final List<Article> articles;
 
   const ArticleListView({Key? key, required this.articles}) : super(key: key);
 

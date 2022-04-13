@@ -1,6 +1,8 @@
 import 'dart:convert';
-import '../models/article.dart';
+
 import 'package:http/http.dart' as http;
+
+import '../models/article.dart';
 
 //Qiita api 記事取得
 class QiitaClient {
@@ -13,8 +15,8 @@ class QiitaClient {
       },
     );
     if (response.statusCode == 200) {
-      final List<dynamic> jsonArray = json.decode(response.body);
-      return jsonArray.map((json) => Article.fromJson(json)).toList();
+      final List<dynamic> jsonResponse = json.decode(response.body);
+      return jsonResponse.map((json) => Article.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load article');
     }

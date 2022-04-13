@@ -15,7 +15,8 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  late Future<List<Article>> articles;
+  late Future<List<Article>> futureArticles;
+  List<Article> articles = [];
   Widget textField() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -50,19 +51,18 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Future<void> initArticle() async {
-    articles = QiitaClient.fetchArticle();
+    articles = await QiitaClient.fetchArticle();
   }
 
   Future<void> reloadArticle() async {
-    initArticle();
     setState(() {
-      ArticleListView(articles: articles);
+      futureArticles = QiitaClient.fetchArticle();
     });
   }
 
   @override
   void initState() {
-    articles = QiitaClient.fetchArticle();
+    futureArticles = QiitaClient.fetchArticle();
     super.initState();
   }
 
@@ -73,9 +73,10 @@ class _FeedPageState extends State<FeedPage> {
       body: Container(
         color: Colors.white,
         child: FutureBuilder<List>(
-          future: articles,
+          future: futureArticles,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              articles = snapshot.data as List<Article>;
               return Column(
                 children: [
                   const Divider(color: Colors.black),
@@ -86,6 +87,8 @@ class _FeedPageState extends State<FeedPage> {
               return ErrorPage(
                 onTapReload: () {
                   reloadArticle();
+                  articles = snapshot.data! as List<Article>;
+                  ArticleListView(articles: articles);
                 },
               );
             } else {
