@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../models/article.dart';
+import '../pages/article_detail.dart';
 
 class ArticleListView extends StatefulWidget {
   final List<Article> articles;
@@ -82,6 +83,21 @@ class _ArticleListViewState extends State<ArticleListView> {
                 ),
               ],
             ),
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                enableDrag: true,
+                isScrollControlled: true,
+                builder: (context) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: ArticleDetail(
+                      article: article,
+                    ),
+                  );
+                },
+              );
+            },
           );
         },
       ),
