@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -38,10 +36,20 @@ class _ArticleDetailState extends State<ArticleDetail> {
     }
   }
 
+  PreferredSize? articleDetailAppBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(70.0),
+      child: Container(
+        padding: const EdgeInsets.only(top: 12),
+        child: AppBarDesign(text: 'Article'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarDesign(text: 'Article'),
+      appBar: articleDetailAppBar(),
       body: Flex(direction: Axis.horizontal, children: [
         Expanded(
           child: SingleChildScrollView(
