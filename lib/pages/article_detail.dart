@@ -40,7 +40,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
     return PreferredSize(
       preferredSize: const Size.fromHeight(70.0),
       child: Container(
-        padding: const EdgeInsets.only(top: 12),
+        padding: const EdgeInsets.only(top: 37.0),
         child: AppBarDesign(text: 'Article'),
       ),
     );
