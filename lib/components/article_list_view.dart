@@ -88,9 +88,13 @@ class _ArticleListViewState extends State<ArticleListView> {
                 context: context,
                 enableDrag: true,
                 isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(25.0)),
+                ),
                 builder: (context) {
                   return SizedBox(
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.height * 0.95,
                     child: ArticleDetail(
                       article: article,
                     ),

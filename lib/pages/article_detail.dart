@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_qiita/components/appbar_design.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../models/article.dart';
@@ -36,38 +37,45 @@ class _ArticleDetailState extends State<ArticleDetail> {
     }
   }
 
-  PreferredSize? articleDetailAppBar() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(70.0),
-      child: Container(
-        padding: const EdgeInsets.only(top: 37.0),
-        child: AppBarDesign(text: 'Article'),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: articleDetailAppBar(),
-      body: Flex(direction: Axis.horizontal, children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Container(
-              height: _webViewHeight,
-              color: Colors.white,
-              child: WebView(
-                initialUrl: widget.article.url,
-                javascriptMode: JavascriptMode.unrestricted,
-                onPageFinished: (String url) => onPageFinished(context, url),
-                onWebViewCreated: (WebViewController webViewController) {
-                  _webViewController = webViewController;
-                },
+    final Size size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height,
+      child: Column(
+        children: [
+          Container(
+            height: 57.0,
+            width: size.width,
+            color: HexColor('F9F9F9'),
+            child: Center(
+              child: Text(
+                "Article",
+                style: GoogleFonts.pacifico(
+                  fontSize: 17,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),
-        ),
-      ]),
+          Flexible(
+            child: SingleChildScrollView(
+              child: Container(
+                height: _webViewHeight,
+                color: Colors.white,
+                child: WebView(
+                  initialUrl: widget.article.url,
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onPageFinished: (String url) => onPageFinished(context, url),
+                  onWebViewCreated: (WebViewController webViewController) {
+                    _webViewController = webViewController;
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
