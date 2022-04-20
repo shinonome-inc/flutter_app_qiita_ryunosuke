@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../models/article.dart';
+import '../pages/article_detail.dart';
 
 class ArticleListView extends StatefulWidget {
   final List<Article> articles;
@@ -17,7 +18,7 @@ class ArticleListView extends StatefulWidget {
 class _ArticleListViewState extends State<ArticleListView> {
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return Expanded(
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: widget.articles.length,
@@ -40,7 +41,7 @@ class _ArticleListViewState extends State<ArticleListView> {
               ),
               placeholder: (context, url) => const CupertinoActivityIndicator(),
               errorWidget: (context, url, error) => const Image(
-                image: AssetImage('images/default_icon_image'),
+                image: AssetImage('images/default_icon_image.png'),
               ),
             ),
             title: Text(
@@ -82,6 +83,26 @@ class _ArticleListViewState extends State<ArticleListView> {
                 ),
               ],
             ),
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                enableDrag: true,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(10.0),
+                  ),
+                ),
+                builder: (context) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.95,
+                    child: ArticleDetail(
+                      article: article,
+                    ),
+                  );
+                },
+              );
+            },
           );
         },
       ),
