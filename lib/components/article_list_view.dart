@@ -18,7 +18,7 @@ class ArticleListView extends StatefulWidget {
 class _ArticleListViewState extends State<ArticleListView> {
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return Expanded(
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: widget.articles.length,
@@ -41,7 +41,7 @@ class _ArticleListViewState extends State<ArticleListView> {
               ),
               placeholder: (context, url) => const CupertinoActivityIndicator(),
               errorWidget: (context, url, error) => const Image(
-                image: AssetImage('images/default_icon_image'),
+                image: AssetImage('images/default_icon_image.png'),
               ),
             ),
             title: Text(
@@ -89,8 +89,9 @@ class _ArticleListViewState extends State<ArticleListView> {
                 enableDrag: true,
                 isScrollControlled: true,
                 shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(25.0)),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(10.0),
+                  ),
                 ),
                 builder: (context) {
                   return SizedBox(

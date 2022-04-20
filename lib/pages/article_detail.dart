@@ -39,43 +39,41 @@ class _ArticleDetailState extends State<ArticleDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    return SizedBox(
-      height: size.height,
-      child: Column(
-        children: [
-          Container(
-            height: 57.0,
-            width: size.width,
-            color: HexColor('F9F9F9'),
-            child: Center(
-              child: Text(
-                "Article",
-                style: GoogleFonts.pacifico(
-                  fontSize: 17,
-                  color: Colors.black,
-                ),
+    return Column(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
+          ),
+          height: 59.0,
+          child: Center(
+            child: Text(
+              "Article",
+              style: GoogleFonts.pacifico(
+                fontSize: 17,
+                color: Colors.black,
               ),
             ),
           ),
-          Flexible(
-            child: SingleChildScrollView(
-              child: Container(
-                height: _webViewHeight,
-                color: Colors.white,
-                child: WebView(
-                  initialUrl: widget.article.url,
-                  javascriptMode: JavascriptMode.unrestricted,
-                  onPageFinished: (String url) => onPageFinished(context, url),
-                  onWebViewCreated: (WebViewController webViewController) {
-                    _webViewController = webViewController;
-                  },
-                ),
+        ),
+        Flexible(
+          child: SingleChildScrollView(
+            child: Container(
+              height: _webViewHeight,
+              color: Colors.white,
+              child: WebView(
+                initialUrl: widget.article.url,
+                javascriptMode: JavascriptMode.unrestricted,
+                onPageFinished: (String url) => onPageFinished(context, url),
+                onWebViewCreated: (WebViewController webViewController) {
+                  _webViewController = webViewController;
+                },
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
