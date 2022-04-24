@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class TopPage extends StatelessWidget {
   const TopPage({Key? key}) : super(key: key);
@@ -22,7 +21,8 @@ class TopPage extends StatelessWidget {
           ),
           Positioned.fill(
             child: Container(
-              color: Colors.black.withOpacity(0.2),),
+              color: Colors.black.withOpacity(0.2),
+            ),
           ),
           Center(
             child: Column(
@@ -59,7 +59,7 @@ class TopPage extends StatelessWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: HexColor('#468300'),
+                      primary: Colors.lightGreen[900],
                       shape: const StadiumBorder(),
                     ),
                   ),
@@ -90,6 +90,3 @@ class TopPage extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/pages/feed_page.dart';
 import 'package:flutter_app_qiita/pages/my_page.dart';
 import 'package:flutter_app_qiita/pages/tag_page.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 import '../pages/setting_page.dart';
 
@@ -19,8 +18,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        activeColor: HexColor('#74C13A'),
-        inactiveColor: HexColor('#828282'),
+        activeColor: Colors.lightGreen,
+        inactiveColor: Colors.grey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.format_list_bulleted_outlined),

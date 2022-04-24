@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class ErrorPage extends StatelessWidget {
   final Function() onTapReload;
@@ -33,11 +32,11 @@ class ErrorPage extends StatelessWidget {
                         style: TextStyle(fontSize: 14.0),
                       ),
                     ),
-                    Text(
+                    const Text(
                       'お手数ですが電波の良い場所で \n 再度読み込みをお願いします',
                       style: TextStyle(
                         fontSize: 12.0,
-                        color: HexColor('#828282'),
+                        color: Colors.grey,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -52,7 +51,7 @@ class ErrorPage extends StatelessWidget {
                   child: ElevatedButton(
                     child: const Text('再度読み込みをする'),
                     style: ElevatedButton.styleFrom(
-                      primary: HexColor('#74C13A'),
+                      primary: Colors.lightGreen,
                       shape: const StadiumBorder(),
                     ),
                     onPressed: () {

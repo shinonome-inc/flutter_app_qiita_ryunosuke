@@ -21,7 +21,6 @@ dependencies:
     sdk: flutter
 
   google_fonts: ^2.3.1
-  hexcolor: ^2.0.6
 
   cupertino_icons: ^1.0.2
 
