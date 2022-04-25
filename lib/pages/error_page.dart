@@ -43,11 +43,11 @@ class ErrorPage extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 32),
-                child: SizedBox(
-                  height: 50.0,
-                  width: 327.0,
+              SizedBox(
+                height: 50.0,
+                width: 327.0,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: ElevatedButton(
                     child: const Text('再度読み込みをする'),
                     style: ElevatedButton.styleFrom(
@@ -60,6 +60,7 @@ class ErrorPage extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 32)
             ],
           ),
         ),
