@@ -38,7 +38,7 @@ class _FeedPageState extends State<FeedPage> {
               borderRadius: BorderRadius.circular(10.0),
               borderSide: const BorderSide(color: Colors.white),
             )),
-        onChanged: (value) {
+        onFieldSubmitted: (value) {
           setState(() {
             searchWord = value;
             reloadArticle();
