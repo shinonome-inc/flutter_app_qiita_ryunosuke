@@ -6,8 +6,10 @@ import '../models/article.dart';
 
 //Qiita api 記事取得
 class QiitaClient {
-  static Future<List<Article>> fetchArticle() async {
-    const url = 'https://qiita.com/api/v2/items';
+  static Future<List<Article>> fetchArticle(int page, String query) async {
+    var url = 'https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
+        query +
+        '%3AQiita';
     final response = await http.get(
       Uri.parse(url),
       headers: {
@@ -18,7 +20,8 @@ class QiitaClient {
       final List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((json) => Article.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load article');
+      throw Exception('Request failed with status: ${response.statusCode}');
     }
   }
 }
+

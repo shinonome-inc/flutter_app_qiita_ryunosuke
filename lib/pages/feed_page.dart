@@ -17,12 +17,18 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   late Future<List<Article>> futureArticles;
   List<Article> articles = [];
+  String searchWord = '';
+  var textController = TextEditingController();
+  int page = 1;
+
   Widget textField() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
       height: 36.0,
       width: double.infinity,
       child: TextFormField(
+        autocorrect: true,
+        controller: textController,
         decoration: InputDecoration(
             prefixIcon: const Icon(Icons.search),
             labelText: 'Search',
@@ -32,6 +38,12 @@ class _FeedPageState extends State<FeedPage> {
               borderRadius: BorderRadius.circular(10.0),
               borderSide: const BorderSide(color: Colors.white),
             )),
+        onFieldSubmitted: (value) {
+          setState(() {
+            searchWord = value;
+            reloadArticle();
+          });
+        },
       ),
     );
   }
@@ -52,13 +64,13 @@ class _FeedPageState extends State<FeedPage> {
 
   void reloadArticle() {
     setState(() {
-      futureArticles = QiitaClient.fetchArticle();
+      futureArticles = QiitaClient.fetchArticle(page, searchWord);
     });
   }
 
   @override
   void initState() {
-    futureArticles = QiitaClient.fetchArticle();
+    futureArticles = QiitaClient.fetchArticle(page, searchWord);
     super.initState();
   }
 
@@ -71,7 +83,7 @@ class _FeedPageState extends State<FeedPage> {
         child: FutureBuilder<List>(
           future: futureArticles,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               articles = snapshot.data as List<Article>;
               return Column(
                 children: [
@@ -85,20 +97,50 @@ class _FeedPageState extends State<FeedPage> {
                   reloadArticle();
                 },
               );
-            } else {
-              return const Padding(
-                padding: EdgeInsets.only(top: 5.0),
-                child: Center(
-                  child: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: CupertinoActivityIndicator()),
-                ),
-              );
+            } else if (searchWord.isNotEmpty) {
+              return searchError();
             }
+            return const Padding(
+              padding: EdgeInsets.only(top: 5.0),
+              child: Center(
+                child: SizedBox(
+                    height: 30, width: 30, child: CupertinoActivityIndicator()),
+              ),
+            );
           },
         ),
       ),
     );
   }
+}
+
+Widget searchError() {
+  return SafeArea(
+    child: Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              '検索にマッチする記事が見つかりませんでした',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              '検索条件を変えるなどして再度検索をしてください',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
