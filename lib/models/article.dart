@@ -1,11 +1,11 @@
 import 'package:flutter_app_qiita/models/user.dart';
 
 class Article {
-   final String title;
-   final String url;
-   final String createdAt;
-   final int likesCount;
-   final User user;
+  final String title;
+  final String url;
+  final String createdAt;
+  final int likesCount;
+  final User user;
 
   Article({
     required this.title,

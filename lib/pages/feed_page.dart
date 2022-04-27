@@ -20,7 +20,6 @@ class _FeedPageState extends State<FeedPage> {
   String searchWord = '';
   var textController = TextEditingController();
   int page = 1;
-
   Widget textField() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -88,7 +87,9 @@ class _FeedPageState extends State<FeedPage> {
               return Column(
                 children: [
                   const Divider(color: Colors.black),
-                  ArticleListView(articles: articles),
+                  ArticleListView(
+                    articles: articles,
+                  ),
                 ],
               );
             } else if (snapshot.hasError) {
