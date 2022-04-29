@@ -20,6 +20,7 @@ class _FeedPageState extends State<FeedPage> {
   String searchWord = '';
   var textController = TextEditingController();
   int page = 1;
+  bool isLoading = false;
   Widget textField() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -67,6 +68,21 @@ class _FeedPageState extends State<FeedPage> {
     });
   }
 
+  Future<void> addItems(int page) async {
+    var items = await QiitaClient.fetchArticle(page, '');
+    setState(() {
+      articles.addAll(items);
+    });
+  }
+
+  Future<void> onRefresh() async {
+    var newItems = await QiitaClient.fetchArticle(1, '');
+    setState(() {
+      articles.clear();
+      articles.addAll(newItems);
+    });
+  }
+
   @override
   void initState() {
     futureArticles = QiitaClient.fetchArticle(page, searchWord);
@@ -79,36 +95,51 @@ class _FeedPageState extends State<FeedPage> {
       appBar: feedAppBar(),
       body: Container(
         color: Colors.white,
-        child: FutureBuilder<List>(
-          future: futureArticles,
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              articles = snapshot.data as List<Article>;
-              return Column(
-                children: [
-                  const Divider(color: Colors.black),
-                  ArticleListView(
-                    articles: articles,
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return ErrorPage(
-                onTapReload: () {
-                  reloadArticle();
-                },
-              );
-            } else if (searchWord.isNotEmpty) {
-              return searchError();
+        child: NotificationListener<ScrollEndNotification>(
+          onNotification: (notification) {
+            final metrics = notification.metrics;
+            if (metrics.extentAfter == 0) {
+              addItems(page++);
             }
-            return const Padding(
-              padding: EdgeInsets.only(top: 5.0),
-              child: Center(
-                child: SizedBox(
-                    height: 30, width: 30, child: CupertinoActivityIndicator()),
-              ),
-            );
+            return true;
           },
+          child: RefreshIndicator(
+            edgeOffset: -500, //android likeなIndicatorを隠す
+            onRefresh: onRefresh,
+            child: FutureBuilder<List>(
+              future: futureArticles,
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  articles = snapshot.data as List<Article>;
+                  return Column(
+                    children: [
+                      const Divider(color: Colors.black),
+                      ArticleListView(
+                        articles: articles,
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return ErrorPage(
+                    onTapReload: () {
+                      reloadArticle();
+                    },
+                  );
+                } else if (searchWord.isNotEmpty) {
+                  return searchError();
+                }
+                return const Padding(
+                  padding: EdgeInsets.only(top: 5.0),
+                  child: Center(
+                    child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: CupertinoActivityIndicator()),
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
