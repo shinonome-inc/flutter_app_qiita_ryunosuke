@@ -18,8 +18,8 @@ class _FeedPageState extends State<FeedPage> {
   late Future<List<Article>> futureArticles;
   List<Article> articles = [];
   String searchWord = '';
-  var textController = TextEditingController();
   int page = 1;
+  var textController = TextEditingController();
   bool isLoading = false;
   Widget textField() {
     return Container(
@@ -69,7 +69,7 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Future<void> addItems(int page) async {
-    var items = await QiitaClient.fetchArticle(page, '');
+    var items = await QiitaClient.fetchArticle(page, searchWord);
     setState(() {
       articles.addAll(items);
     });
@@ -99,7 +99,7 @@ class _FeedPageState extends State<FeedPage> {
           onNotification: (notification) {
             final metrics = notification.metrics;
             if (metrics.extentAfter == 0) {
-              addItems(page++);
+              addItems(++page);
             }
             return true;
           },
