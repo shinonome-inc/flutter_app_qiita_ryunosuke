@@ -16,8 +16,6 @@ class QiitaClient {
         'content-type': 'application/json',
       },
     );
-    print('page: $page');
-    print('query: $query');
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((json) => Article.fromJson(json)).toList();
@@ -26,4 +24,3 @@ class QiitaClient {
     }
   }
 }
-
