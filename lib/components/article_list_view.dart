@@ -42,8 +42,7 @@ class _ArticleListViewState extends State<ArticleListView> {
                   shape: BoxShape.circle,
                 ),
               ),
-              placeholder: (context, url) =>
-                  const CupertinoActivityIndicator(),
+              placeholder: (context, url) => const CupertinoActivityIndicator(),
               errorWidget: (context, url, error) => Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -76,8 +75,7 @@ class _ArticleListViewState extends State<ArticleListView> {
                       ),
                       const SizedBox(width: 3.0),
                       Text(
-                        '投稿日:' +
-                            DateFormat('yyyy/M/d').format(dateTime),
+                        '投稿日:' + DateFormat('yyyy/M/d').format(dateTime),
                         style: const TextStyle(
                           fontSize: 12,
                         ),
