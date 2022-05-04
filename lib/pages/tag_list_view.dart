@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/tag.dart';
 
 class TagListView extends StatefulWidget {
   final List<Tag> tags;
-  const TagListView({Key? key, required this.tags}) : super(key: key);
+  final int tagsNum;
+  const TagListView({Key? key, required this.tags, required this.tagsNum})
+      : super(key: key);
 
   @override
   State<TagListView> createState() => _TagListViewState();
@@ -14,11 +17,9 @@ class TagListView extends StatefulWidget {
 class _TagListViewState extends State<TagListView> {
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    double width = size.width;
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: (width >= 600) ? 3 : 2,
+        crossAxisCount: widget.tagsNum,
       ),
       shrinkWrap: true,
       physics: const AlwaysScrollableScrollPhysics(),
@@ -44,6 +45,15 @@ class _TagListViewState extends State<TagListView> {
                     width: 38.0,
                     child: CachedNetworkImage(
                       imageUrl: tag.iconUrl,
+                      placeholder: (context, url) =>
+                          const CupertinoActivityIndicator(),
+                      errorWidget: (context, url, error) => Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('images/default_icon_image.png'),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
