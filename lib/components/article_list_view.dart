@@ -9,7 +9,10 @@ import '../pages/article_detail.dart';
 class ArticleListView extends StatefulWidget {
   final List<Article> articles;
 
-  const ArticleListView({Key? key, required this.articles}) : super(key: key);
+  const ArticleListView({
+    Key? key,
+    required this.articles,
+  }) : super(key: key);
 
   @override
   State<ArticleListView> createState() => _ArticleListViewState();
@@ -19,7 +22,7 @@ class _ArticleListViewState extends State<ArticleListView> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
+      child: ListView.separated(
         shrinkWrap: true,
         itemCount: widget.articles.length,
         itemBuilder: (context, index) {
@@ -40,8 +43,14 @@ class _ArticleListViewState extends State<ArticleListView> {
                 ),
               ),
               placeholder: (context, url) => const CupertinoActivityIndicator(),
-              errorWidget: (context, url, error) => const Image(
-                image: AssetImage('images/default_icon_image.png'),
+              errorWidget: (context, url, error) => Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('images/default_icon_image.png'),
+                    fit: BoxFit.cover,
+                  ),
+                  shape: BoxShape.circle,
+                ),
               ),
             ),
             title: Text(
@@ -52,36 +61,36 @@ class _ArticleListViewState extends State<ArticleListView> {
                 fontSize: 14,
               ),
             ),
-            subtitle: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      '@' + article.user.id,
-                      style: const TextStyle(
-                        fontSize: 12,
+            subtitle: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        '@' + article.user.id,
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 3.0),
-                    Text(
-                      '投稿日:' + DateFormat('yyyy/M/d').format(dateTime),
-                      style: const TextStyle(
-                        fontSize: 12,
+                      const SizedBox(width: 3.0),
+                      Text(
+                        '投稿日:' + DateFormat('yyyy/M/d').format(dateTime),
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 3.0),
-                    Text(
-                      'LGTM:' + article.likesCount.toString(),
-                      style: const TextStyle(
-                        fontSize: 12,
+                      const SizedBox(width: 3.0),
+                      Text(
+                        'LGTM:' + article.likesCount.toString(),
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const Divider(
-                  height: 5.0,
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
             onTap: () {
               showModalBottomSheet(
@@ -103,6 +112,13 @@ class _ArticleListViewState extends State<ArticleListView> {
                 },
               );
             },
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const Divider(
+            height: 2.0,
+            indent: 62.0,
+            color: Colors.grey,
           );
         },
       ),

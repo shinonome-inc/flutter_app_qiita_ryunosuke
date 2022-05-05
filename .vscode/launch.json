@@ -12,7 +12,7 @@
             "appRoot": "${workspaceRoot}",
             "sourceMaps": true,
             "watch": true,
-            "emulator": true
+            "emulator": true,
         },
         {
             "name": "flutter_app_qiita",
