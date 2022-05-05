@@ -22,7 +22,7 @@ class _ArticleListViewState extends State<ArticleListView> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
+      child: ListView.separated(
         shrinkWrap: true,
         itemCount: widget.articles.length,
         itemBuilder: (context, index) {
@@ -42,8 +42,7 @@ class _ArticleListViewState extends State<ArticleListView> {
                   shape: BoxShape.circle,
                 ),
               ),
-              placeholder: (context, url) =>
-                  const CupertinoActivityIndicator(),
+              placeholder: (context, url) => const CupertinoActivityIndicator(),
               errorWidget: (context, url, error) => Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -76,8 +75,7 @@ class _ArticleListViewState extends State<ArticleListView> {
                       ),
                       const SizedBox(width: 3.0),
                       Text(
-                        '投稿日:' +
-                            DateFormat('yyyy/M/d').format(dateTime),
+                        '投稿日:' + DateFormat('yyyy/M/d').format(dateTime),
                         style: const TextStyle(
                           fontSize: 12,
                         ),
@@ -90,9 +88,6 @@ class _ArticleListViewState extends State<ArticleListView> {
                         ),
                       ),
                     ],
-                  ),
-                  const Divider(
-                    height: 5.0,
                   ),
                 ],
               ),
@@ -117,6 +112,13 @@ class _ArticleListViewState extends State<ArticleListView> {
                 },
               );
             },
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const Divider(
+            height: 2.0,
+            indent: 62.0,
+            color: Colors.grey,
           );
         },
       ),
