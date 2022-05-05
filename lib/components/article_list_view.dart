@@ -22,7 +22,7 @@ class _ArticleListViewState extends State<ArticleListView> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
+      child: ListView.separated(
         shrinkWrap: true,
         itemCount: widget.articles.length,
         itemBuilder: (context, index) {
@@ -89,9 +89,6 @@ class _ArticleListViewState extends State<ArticleListView> {
                       ),
                     ],
                   ),
-                  const Divider(
-                    height: 5.0,
-                  ),
                 ],
               ),
             ),
@@ -115,6 +112,13 @@ class _ArticleListViewState extends State<ArticleListView> {
                 },
               );
             },
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const Divider(
+            height: 2.0,
+            color: Colors.grey,
+            indent: 62.0,
           );
         },
       ),
