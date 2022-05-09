@@ -39,7 +39,7 @@ class _TagPageState extends State<TagPage> {
       body: FutureBuilder<List<dynamic>>(
         future: futureTag,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          int tagsNum = (MediaQuery.of(context).size.width ~/ 162);      
+          int tagsNum = (MediaQuery.of(context).size.width ~/ 162);
           if (snapshot.hasData) {
             tags = snapshot.data;
             return TagListView(
