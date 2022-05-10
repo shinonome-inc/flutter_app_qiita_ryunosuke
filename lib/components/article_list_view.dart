@@ -117,8 +117,8 @@ class _ArticleListViewState extends State<ArticleListView> {
         separatorBuilder: (BuildContext context, int index) {
           return const Divider(
             height: 2.0,
-            indent: 62.0,
             color: Colors.grey,
+            indent: 62.0,
           );
         },
       ),
