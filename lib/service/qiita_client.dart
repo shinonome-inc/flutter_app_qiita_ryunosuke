@@ -7,7 +7,10 @@ import '../models/tag.dart';
 
 //Qiita api 記事取得
 class QiitaClient {
-  static Future<List<Article>> fetchArticle(int page, String query) async {
+  static Future<List<Article>> fetchArticle(
+    int page,
+    String query,
+  ) async {
     var url = 'https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
         query +
         '%3AQiita';
@@ -24,6 +27,7 @@ class QiitaClient {
       throw Exception('Request failed with status: ${response.statusCode}');
     }
   }
+
   static Future<List<Tag>> fetchTag() async {
     var url = 'https://qiita.com/api/v2/tags?page=1&per_page=20&sort=count';
     final response = await http.get(
@@ -39,5 +43,4 @@ class QiitaClient {
       throw Exception('faild to load tags');
     }
   }
-
 }
