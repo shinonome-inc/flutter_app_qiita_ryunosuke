@@ -10,10 +10,16 @@ class QiitaClient {
   static Future<List<Article>> fetchArticle(
     int page,
     String query,
+    String tagId,
   ) async {
-    var url = 'https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
-        query +
-        '%3AQiita';
+    late String url;
+    if (query.isNotEmpty) {
+      url = 'https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
+          query +
+          '%3AQiita';
+    } else if (tagId.isNotEmpty) {
+      url = 'https://qiita.com/api/v2/tags/$tagId/items?page=$page';
+    }
     final response = await http.get(
       Uri.parse(url),
       headers: {
