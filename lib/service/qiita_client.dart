@@ -12,13 +12,15 @@ class QiitaClient {
     String query,
     String tagId,
   ) async {
-    late String url;
+    String url;
     if (query.isNotEmpty) {
       url = 'https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
           query +
           '%3AQiita';
     } else if (tagId.isNotEmpty) {
       url = 'https://qiita.com/api/v2/tags/$tagId/items?page=$page';
+    } else {
+      url = 'https://qiita.com/api/v2/items?page=$page';
     }
     final response = await http.get(
       Uri.parse(url),

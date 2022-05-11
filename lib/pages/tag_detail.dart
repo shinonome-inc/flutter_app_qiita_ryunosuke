@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:flutter_app_qiita/components/article_list_view.dart';
 import 'package:flutter_app_qiita/models/article.dart';
 import 'package:flutter_app_qiita/pages/error_page.dart';
 import 'package:flutter_app_qiita/service/qiita_client.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../models/tag.dart';
 
@@ -40,21 +40,9 @@ class _TagDetailState extends State<TagDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          tagId,
-          style: GoogleFonts.pacifico(color: Colors.black, fontSize: 17.0),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.lightGreen,
-          ),
-        ),
-        backgroundColor: Colors.white,
+      appBar: AppBarDesign(
+        text: tagId,
+        useBackButton: true,
       ),
       body: FutureBuilder<List<dynamic>>(
         future: futureArticles,

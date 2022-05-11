@@ -3,8 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppBarDesign extends StatelessWidget with PreferredSizeWidget {
   final String text;
+  final bool useBackButton;
 
-  AppBarDesign({required this.text, Key? key}) : super(key: key);
+  AppBarDesign({required this.text, this.useBackButton = false, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +15,15 @@ class AppBarDesign extends StatelessWidget with PreferredSizeWidget {
       bottomOpacity: 0.0,
       elevation: 0.0,
       centerTitle: true,
+      leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.lightGreen,
+          ),
+        ),
       title: Text(
         text,
         style: GoogleFonts.pacifico(
