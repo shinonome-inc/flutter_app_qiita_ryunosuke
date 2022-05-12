@@ -80,7 +80,9 @@ class _TagDetailState extends State<TagDetail> {
             padding: EdgeInsets.only(top: 5.0),
             child: Center(
               child: SizedBox(
-                  height: 30, width: 30, child: CupertinoActivityIndicator()),
+                  height: 30, 
+                  width: 30, 
+                  child: CupertinoActivityIndicator()),
             ),
           );
         },
