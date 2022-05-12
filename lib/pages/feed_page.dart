@@ -54,7 +54,9 @@ class _FeedPageState extends State<FeedPage> {
       child: Center(
         child: Column(
           children: [
-            AppBarDesign(text: 'Feed'),
+            AppBarDesign(
+              text: 'Feed',
+            ),
             textField(),
           ],
         ),
@@ -64,12 +66,12 @@ class _FeedPageState extends State<FeedPage> {
 
   void reloadArticle() {
     setState(() {
-      futureArticles = QiitaClient.fetchArticle(page, searchWord,'');
+      futureArticles = QiitaClient.fetchArticle(page, searchWord, '');
     });
   }
 
   Future<void> addItems(int page) async {
-    var items = await QiitaClient.fetchArticle(page, searchWord,'');
+    var items = await QiitaClient.fetchArticle(page, searchWord, '');
     setState(() {
       articles.addAll(items);
     });

@@ -15,15 +15,17 @@ class AppBarDesign extends StatelessWidget with PreferredSizeWidget {
       bottomOpacity: 0.0,
       elevation: 0.0,
       centerTitle: true,
-      leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.lightGreen,
-          ),
-        ),
+      leading: useBackButton
+          ? IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.lightGreen,
+              ),
+            )
+          : null,
       title: Text(
         text,
         style: GoogleFonts.pacifico(
