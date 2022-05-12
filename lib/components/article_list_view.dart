@@ -42,8 +42,13 @@ class _ArticleListViewState extends State<ArticleListView> {
                   shape: BoxShape.circle,
                 ),
               ),
-              placeholder: (context, url) => const CupertinoActivityIndicator(),
+              placeholder: (context, url) => const SizedBox(
+                  width: 38.0,
+                  height: 38.0,
+                  child: CupertinoActivityIndicator()),
               errorWidget: (context, url, error) => Container(
+                width: 38.0,
+                height: 38.0,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('images/default_icon_image.png'),

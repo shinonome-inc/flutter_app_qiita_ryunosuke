@@ -54,7 +54,9 @@ class _FeedPageState extends State<FeedPage> {
       child: Center(
         child: Column(
           children: [
-            AppBarDesign(text: 'Feed'),
+            AppBarDesign(
+              text: 'Feed',
+            ),
             textField(),
           ],
         ),
@@ -64,19 +66,19 @@ class _FeedPageState extends State<FeedPage> {
 
   void reloadArticle() {
     setState(() {
-      futureArticles = QiitaClient.fetchArticle(page, searchWord);
+      futureArticles = QiitaClient.fetchArticle(page, searchWord, '');
     });
   }
 
   Future<void> addItems(int page) async {
-    var items = await QiitaClient.fetchArticle(page, searchWord);
+    var items = await QiitaClient.fetchArticle(page, searchWord, '');
     setState(() {
       articles.addAll(items);
     });
   }
 
   Future<void> onRefresh() async {
-    var newItems = await QiitaClient.fetchArticle(1, '');
+    var newItems = await QiitaClient.fetchArticle(1, '', '');
     setState(() {
       articles.clear();
       articles.addAll(newItems);
@@ -85,7 +87,7 @@ class _FeedPageState extends State<FeedPage> {
 
   @override
   void initState() {
-    futureArticles = QiitaClient.fetchArticle(page, searchWord);
+    futureArticles = QiitaClient.fetchArticle(page, searchWord, '');
     super.initState();
   }
 
