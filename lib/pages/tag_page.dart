@@ -17,16 +17,32 @@ class TagPage extends StatefulWidget {
 class _TagPageState extends State<TagPage> {
   late Future<List<dynamic>> futureTag;
   List<Tag> tags = [];
+  int page = 1;
 
   @override
   void initState() {
-    futureTag = QiitaClient.fetchTag();
+    futureTag = QiitaClient.fetchTag(page);
     super.initState();
   }
 
   void reloadTag() {
     setState(() {
-      futureTag = QiitaClient.fetchTag();
+      futureTag = QiitaClient.fetchTag(page);
+    });
+  }
+
+  Future<void> addTags(int page) async {
+    var tagItems = await QiitaClient.fetchTag(page);
+    setState(() {
+      tags.addAll(tagItems);
+    });
+  }
+
+  Future<void> onRefreshTag() async {
+    var newTagItems = await QiitaClient.fetchTag(page);
+    setState(() {
+      tags.clear();
+      tags.addAll(newTagItems);
     });
   }
 
@@ -36,27 +52,42 @@ class _TagPageState extends State<TagPage> {
       appBar: AppBarDesign(
         text: 'Tag',
       ),
-      body: FutureBuilder<List<dynamic>>(
-        future: futureTag,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          int tagsNum = (MediaQuery.of(context).size.width ~/ 162);
-          if (snapshot.hasData) {
-            tags = snapshot.data;
-            return TagListView(
-              tags: tags,
-              tagsNum: tagsNum,
-            );
-          } else if (snapshot.hasError) {
-            return ErrorPage(onTapReload: reloadTag);
+      body: NotificationListener<ScrollEndNotification>(
+        onNotification: (notification) {
+          final metrics = notification.metrics;
+          if (metrics.extentAfter == 0) {
+            addTags(++page);
           }
-          return const Padding(
-            padding: EdgeInsets.only(top: 5.0),
-            child: Center(
-              child: SizedBox(
-                  height: 30, width: 30, child: CupertinoActivityIndicator()),
-            ),
-          );
+          return true;
         },
+        child: RefreshIndicator(
+          onRefresh: onRefreshTag,
+          edgeOffset: -500,
+          child: FutureBuilder<List<dynamic>>(
+            future: futureTag,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              int tagsNum = (MediaQuery.of(context).size.width ~/ 162);
+              if (snapshot.hasData) {
+                tags = snapshot.data;
+                return TagListView(
+                  tags: tags,
+                  tagsNum: tagsNum,
+                );
+              } else if (snapshot.hasError) {
+                return ErrorPage(onTapReload: reloadTag);
+              }
+              return const Padding(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Center(
+                  child: SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: CupertinoActivityIndicator()),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
