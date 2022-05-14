@@ -30,6 +30,21 @@ class _TagDetailState extends State<TagDetail> {
     });
   }
 
+  Future<void> addTagDetailItems(int page) async {
+    var tagDetailItems = await QiitaClient.fetchArticle(page,'',tagId);
+    setState(() {
+      articles.addAll(tagDetailItems);
+    });
+  }
+
+  Future<void> onRefreshTagDetail() async {
+    var newItems = await QiitaClient.fetchArticle(1, '', tagId);
+    setState(() {
+      articles.clear();
+      articles.addAll(newItems);
+    });
+  }
+
   @override
   void initState() {
     tagId = widget.tag.id;
@@ -44,48 +59,58 @@ class _TagDetailState extends State<TagDetail> {
         text: tagId,
         useBackButton: true,
       ),
-      body: FutureBuilder<List<dynamic>>(
-        future: futureArticles,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            articles = snapshot.data as List<Article>;
-            return SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  Container(
-                    height: 28,
-                    width: double.infinity,
-                    color: const Color(0xFFF2F2F2),
-                    child: const Padding(
-                      padding: EdgeInsets.only(top: 7, left: 12),
-                      child: Text(
-                        '投稿記事',
-                        style: TextStyle(
-                          fontSize: 12.0,
+      body: NotificationListener<ScrollEndNotification>(
+        onNotification: (notification) {
+          final metrics = notification.metrics;
+          if (metrics.extentAfter == 0) {
+            addTagDetailItems(++page);
+          }
+          return true;
+        },
+        child: RefreshIndicator(
+          onRefresh: onRefreshTagDetail,
+          child: FutureBuilder<List<dynamic>>(
+            future: futureArticles,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                articles = snapshot.data as List<Article>;
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 28,
+                        width: double.infinity,
+                        color: const Color(0xFFF2F2F2),
+                        child: const Padding(
+                          padding: EdgeInsets.only(top: 7, left: 12),
+                          child: Text(
+                            '投稿記事',
+                            style: TextStyle(
+                              fontSize: 12.0,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      ArticleListView(articles: articles),
+                    ],
                   ),
-                  ArticleListView(articles: articles),
-                ],
-              ),
-            );
-          } else if (snapshot.hasError) {
-            ErrorPage(
-              onTapReload: reload,
-            );
-          }
-          return const Padding(
-            padding: EdgeInsets.only(top: 5.0),
-            child: Center(
-              child: SizedBox(
-                  height: 30, 
-                  width: 30, 
-                  child: CupertinoActivityIndicator()),
-            ),
-          );
-        },
+                );
+              } else if (snapshot.hasError) {
+                ErrorPage(
+                  onTapReload: reload,
+                );
+              }
+              return const Padding(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Center(
+                  child: SizedBox(
+                      height: 30, width: 30, child: CupertinoActivityIndicator()),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

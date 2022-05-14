@@ -36,8 +36,8 @@ class QiitaClient {
     }
   }
 
-  static Future<List<Tag>> fetchTag() async {
-    var url = 'https://qiita.com/api/v2/tags?page=1&per_page=20&sort=count';
+  static Future<List<Tag>> fetchTag(int page) async {
+    var url = 'https://qiita.com/api/v2/tags?page=$page&per_page=20&sort=count';
     final response = await http.get(
       Uri.parse(url),
       headers: {
