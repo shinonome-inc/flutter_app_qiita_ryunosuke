@@ -47,7 +47,7 @@ class ErrorPage extends StatelessWidget {
                 height: 50.0,
                 width: 327.0,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: ElevatedButton(
                     child: const Text('再度読み込みをする'),
                     style: ElevatedButton.styleFrom(
