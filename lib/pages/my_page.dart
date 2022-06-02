@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
+import 'package:flutter_app_qiita/pages/not_login_page.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({ Key? key }): super(key: key);
@@ -12,7 +13,7 @@ class _MypageState extends State<Mypage> {
   Widget build(BuildContext context) {
     return  Scaffold(
         appBar: AppBarDesign(text:'MyPage',),
-        body: Container(),
+        body: const NotLoginPage(),
       );
   }
 }
