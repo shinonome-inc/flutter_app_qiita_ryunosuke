@@ -1,11 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
+import 'package:flutter_app_qiita/service/qiita_client.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../bottom_navigationbar/bottom_navigation.dart';
 import 'login_page.dart';
 
-class TopPage extends StatelessWidget {
-  const TopPage({Key? key}) : super(key: key);
+class TopPage extends StatefulWidget {
+  final Uri? uri;
+  const TopPage({Key? key, required this.uri}) : super(key: key);
+
+  @override
+  State<TopPage> createState() => _TopPageState();
+}
+
+class _TopPageState extends State<TopPage> {
+  String? acessToken = '';
+
+  bool isLoading = false;
+
+  Future<void> login() async {
+    isLoading = true;
+    acessToken = await QiitaClient.getAccessToken();
+    isLoading = false;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const BottomNavigation(),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    if (widget.uri != null) {
+      login();
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,10 +94,7 @@ class TopPage extends StatelessWidget {
                         ),
                       ),
                       builder: (context) {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.95,
-                          child: const LoginPage(),
-                          );
+                        return const LoginPage();
                       },
                     );
                   },
@@ -90,9 +119,11 @@ class TopPage extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => const BottomNavigation())));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BottomNavigation(),
+                      ),
+                    );
                   },
                   child: const Text(
                     'ログインせずに利用する',

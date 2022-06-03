@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     await QiitaClient.saveAccessToken(accessToken);
 
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const TopPage()),
+      MaterialPageRoute(builder: (_) =>  TopPage(uri: uri,)),
     );
   }
 
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: _webViewHeight,
                 child: WebView(
-                  initialUrl: QiitaClient.createdAuthorizeUrl(),
+                  initialUrl: QiitaClient.createAuthorizeUrl(),
                   javascriptMode: JavascriptMode.unrestricted,
                   onPageFinished: (String url) async {
                     final uri = Uri.parse(url);
