@@ -105,7 +105,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   TextButton(
                     onPressed: () {},
                     child:
-                        Text(widget.user.followeesCount.toString() + 'フォロー中'),
+                        Text(widget.user.followingsCount.toString() + 'フォロー中'),
                     style: TextButton.styleFrom(
                       primary: Colors.black,
                     ),
