@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:flutter_app_qiita/pages/top_page.dart';
-import 'package:flutter_app_qiita/service/qiita_client.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../service/qiita_client.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,17 +14,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late WebViewController _webViewController;
-  double _webViewHeight = 1;
-  late final Uri uri;
+  double _webViewHeight = 0;
 
-  void onAuthorizeCallbackIsCalled(Uri uri) async {
-    final accessToken = await QiitaClient.createAccessTokenFromCallbackUri(uri);
-    await QiitaClient.saveAccessToken(accessToken);
-
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) =>  TopPage(uri: uri,)),
-    );
-  }
+  late final String uri;
 
   Future<void> onPageFinished(BuildContext context, String url) async {
     double newHeight = double.parse(
@@ -35,18 +28,42 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  void onAuthorizeCallbackIsCalled(Uri uri) async {
+    final accessToken = await QiitaClient.createAccessTokenFromCallbackUri(uri);
+    await QiitaClient.saveAccessToken(accessToken);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) =>  TopPage(uri: uri,)),  
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarDesign(
-        text: 'Qiita Auth',
-      ),
-      body: SizedBox(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
+    final Size size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height * 0.95,
+      child: Column(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
+            ),
+            height: 59.0,
+            child: Center(
+              child: Text(
+                "Qiita Auth",
+                style: GoogleFonts.pacifico(
+                  fontSize: 17,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+          Flexible(
+            child: SingleChildScrollView(
+              child: Container(
                 height: _webViewHeight,
+                color: Colors.white,
                 child: WebView(
                   initialUrl: QiitaClient.createAuthorizeUrl(),
                   javascriptMode: JavascriptMode.unrestricted,
@@ -57,18 +74,14 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     await onPageFinished(context, url);
                   },
-                  onWebViewCreated: (controller) {
-                    _webViewController = controller;
+                  onWebViewCreated: (WebViewController webViewController) {
+                    _webViewController = webViewController;
                   },
                 ),
               ),
-              Container(
-                height: 500,
-                color: Colors.white,
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
