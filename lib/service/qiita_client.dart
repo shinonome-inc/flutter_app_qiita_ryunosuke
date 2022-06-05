@@ -116,7 +116,7 @@ class QiitaClient {
     }
   }
 
-  static Future<User> fetchMyprofile() async {
+  static Future<User> fetchMyProfile() async {
     final accessToken = await getAccessToken();
     var url = 'https://qiita.com/api/v2/authenticated_user';
     final response = await http.get(

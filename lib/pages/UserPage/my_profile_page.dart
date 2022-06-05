@@ -9,7 +9,6 @@ import '../../../models/user.dart';
 import '../../../service/qiita_client.dart';
 import '../error_page.dart';
 
-
 class MyProfilePage extends StatefulWidget {
   final User user;
   const MyProfilePage({Key? key, required this.user}) : super(key: key);
@@ -40,89 +39,85 @@ class _MyProfilePageState extends State<MyProfilePage> {
     super.initState();
   }
 
+  Widget myProfile() {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Row(
+        children: [
+          CachedNetworkImage(
+            imageUrl: widget.user.iconUrl,
+            imageBuilder: (context, imageProvider) => Container(
+              width: 80.0,
+              height: 80.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          const Spacer(),
+        ],
+      ),
+      const Padding(
+        padding: EdgeInsets.fromLTRB(0, 16, 0, 4),
+      ),
+      Text(
+        widget.user.name,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(color: Colors.black, fontSize: 14.0),
+      ),
+      const SizedBox(height: 4.0),
+      Text(
+        '@' + widget.user.id,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        style: const TextStyle(
+          color: Color(0xFF828282),
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Text(
+          widget.user.description,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            color: Color(0xFF828282),
+          ),
+        ),
+      ),
+      Row(
+        children: <Widget>[
+          TextButton(
+            onPressed: () {},
+            child: Text(widget.user.followingsCount.toString() + 'フォロー中'),
+            style: TextButton.styleFrom(
+              primary: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 4.0),
+          TextButton(
+            onPressed: () {},
+            child: Text(widget.user.followersCount.toString() + 'フォロワー'),
+            style: TextButton.styleFrom(
+              primary: Colors.black,
+            ),
+          ),
+        ],
+      ),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
           padding: const EdgeInsets.only(left: 24.0, top: 25.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: widget.user.iconUrl,
-                      imageBuilder: (context, imageProvider) => Container(
-                        width: 80.0,
-                        height: 80.0,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 4),
-                    ),
-                    Text(
-                      widget.user.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          const TextStyle(color: Colors.black, fontSize: 14.0),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 4.0),
-              Text(
-                '@' + widget.user.id,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: const TextStyle(
-                  color: Color(0xFF828282),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text(
-                  widget.user.description,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Color(0xFF828282),
-                  ),
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  TextButton(
-                    onPressed: () {},
-                    child:
-                        Text(widget.user.followingsCount.toString() + 'フォロー中'),
-                    style: TextButton.styleFrom(
-                      primary: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 4.0),
-                  TextButton(
-                    onPressed: () {},
-                    child:
-                        Text(widget.user.followersCount.toString() + 'フォロワー'),
-                    style: TextButton.styleFrom(
-                      primary: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          child: myProfile(),
         ),
         Container(
           height: 28,

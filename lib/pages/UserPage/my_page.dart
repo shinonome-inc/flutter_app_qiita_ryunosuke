@@ -18,7 +18,7 @@ class Mypage extends StatefulWidget {
 
 class _MypageState extends State<Mypage> {
   Future<User>? myProfile;
-  bool accecssTokenIsSaved = false;
+  bool accessTokenIsSaved = false;
   bool hasSnapshot = false;
   late User? user;
 
@@ -27,28 +27,29 @@ class _MypageState extends State<Mypage> {
   Widget notLoginView() => const NotLoginPage();
 
   void reload() {
-    myProfile = QiitaClient.fetchMyprofile();
+    myProfile = QiitaClient.fetchMyProfile();
   }
 
   Future<void> onRefreshUser() async {
-    myProfile = QiitaClient.fetchMyprofile();
+    myProfile = QiitaClient.fetchMyProfile();
   }
 
-  void confAcessTokenIsSaved() async {
-    accecssTokenIsSaved = await QiitaClient.accessTokenIsSaved();
+  void confAccessTokenIsSaved() async {
+    accessTokenIsSaved = await QiitaClient.accessTokenIsSaved();
+    setState(() {});
   }
 
   @override
   void initState() {
-    confAcessTokenIsSaved();
+    confAccessTokenIsSaved();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    if (accecssTokenIsSaved) {
-      myProfile = QiitaClient.fetchMyprofile();
+    if (accessTokenIsSaved) {
+      myProfile = QiitaClient.fetchMyProfile();
       return Scaffold(
         appBar: AppBarDesign(text: 'MyPage'),
         body: Column(

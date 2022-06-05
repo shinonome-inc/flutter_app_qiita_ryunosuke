@@ -14,13 +14,13 @@ class TopPage extends StatefulWidget {
 }
 
 class _TopPageState extends State<TopPage> {
-  String? acessToken = '';
+  String? accessToken = '';
 
   bool isLoading = false;
 
   Future<void> login() async {
     isLoading = true;
-    acessToken = await QiitaClient.getAccessToken();
+    accessToken = await QiitaClient.getAccessToken();
     isLoading = false;
     Navigator.push(
       context,

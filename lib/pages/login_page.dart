@@ -32,7 +32,10 @@ class _LoginPageState extends State<LoginPage> {
     final accessToken = await QiitaClient.createAccessTokenFromCallbackUri(uri);
     await QiitaClient.saveAccessToken(accessToken);
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) =>  TopPage(uri: uri,)),  
+      MaterialPageRoute(
+          builder: (_) => TopPage(
+                uri: uri,
+              )),
     );
   }
 
