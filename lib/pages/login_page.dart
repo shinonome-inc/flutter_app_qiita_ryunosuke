@@ -18,6 +18,16 @@ class _LoginPageState extends State<LoginPage> {
 
   late final String uri;
 
+  Future<void> onPageFinished(BuildContext context, String url) async {
+    double newHeight = double.parse(
+      await _webViewController.runJavascriptReturningResult(
+          "document.documentElement.scrollHeight;"),
+    );
+    setState(() {
+      _webViewHeight = newHeight;
+    });
+  }
+
   void onAuthorizeCallbackIsCalled(Uri uri) async {
     final accessToken = await QiitaClient.createAccessTokenFromCallbackUri(uri);
     await QiitaClient.saveAccessToken(accessToken);
@@ -27,20 +37,6 @@ class _LoginPageState extends State<LoginPage> {
                 uri: uri,
               )),
     );
-  }
-
-  Future<void> onPageFinished(context, url) async {
-    final uri = Uri.parse(url);
-    if (uri.queryParameters['code'] != null) {
-      onAuthorizeCallbackIsCalled(uri);
-    }
-    double newHeight = double.parse(
-      await _webViewController.runJavascriptReturningResult(
-          "document.documentElement.scrollHeight;"),
-    );
-    setState(() {
-      _webViewHeight = newHeight;
-    });
   }
 
   @override
