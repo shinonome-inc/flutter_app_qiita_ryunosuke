@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/pages/feed_page.dart';
-import 'package:flutter_app_qiita/pages/UserPage/my_page.dart';
+import 'package:flutter_app_qiita/pages/user_page/my_page.dart';
 import 'package:flutter_app_qiita/pages/tag_page.dart';
 
 import '../pages/setting_page.dart';

@@ -99,7 +99,7 @@ class _MypageState extends State<Mypage> {
 }
 
 
-//Mypageのプロフィール表示用クラス
+//my_pageのプロフィール表示用クラス
 class MyProfilePage extends StatefulWidget {
   final User user;
   const MyProfilePage({Key? key, required this.user}) : super(key: key);
