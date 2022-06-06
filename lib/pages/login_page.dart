@@ -18,7 +18,15 @@ class _LoginPageState extends State<LoginPage> {
 
   late final String uri;
 
-  Future<void> onPageFinished(BuildContext context, String url) async {
+  Future<void> onPageFinished (BuildContext context, String url) async {
+    final uri = Uri.parse(url);
+    if (uri.queryParameters['code'] != null) {
+      onAuthorizeCallbackIsCalled(uri);
+    }
+    await pageLoading(context , url);
+  }
+
+  Future<void> pageLoading (BuildContext context, String url) async {
     double newHeight = double.parse(
       await _webViewController.runJavascriptReturningResult(
           "document.documentElement.scrollHeight;"),
@@ -70,13 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: WebView(
                   initialUrl: QiitaClient.createAuthorizeUrl(),
                   javascriptMode: JavascriptMode.unrestricted,
-                  onPageFinished: (String url) async {
-                    final uri = Uri.parse(url);
-                    if (uri.queryParameters['code'] != null) {
-                      onAuthorizeCallbackIsCalled(uri);
-                    }
-                    await onPageFinished(context, url);
-                  },
+                  onPageFinished: (String url) => onPageFinished(context, url),
                   onWebViewCreated: (WebViewController webViewController) {
                     _webViewController = webViewController;
                   },
