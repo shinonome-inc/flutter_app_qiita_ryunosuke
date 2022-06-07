@@ -63,7 +63,7 @@ class _TopPageState extends State<TopPage> {
           Center(
             child: Column(
               children: [
-                Expanded(flex: 3, child: Container()), //端末によって見え方に違いが現れないように
+                Expanded(flex: 3, child: Container()),
                 Text(
                   'Qiita Feed App',
                   style: GoogleFonts.pacifico(
