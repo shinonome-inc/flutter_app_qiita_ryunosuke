@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app_qiita/service/qiita_client.dart';
@@ -23,7 +24,6 @@ class _TopPageState extends State<TopPage> {
   Future<void> login() async {
     isLoading = true;
     accessToken = await QiitaClient.getAccessToken();
-    isLoading = false;
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -36,6 +36,7 @@ class _TopPageState extends State<TopPage> {
   void initState() {
     if (widget.uri != null) {
       login();
+      isLoading = false;
     }
     super.initState();
   }
@@ -150,7 +151,7 @@ class _TopPageState extends State<TopPage> {
               ),
               child: Container(color: const Color(0x00000000).withOpacity(0)),
             ),
-          if (isLoading) const Center(child: CircularProgressIndicator()),
+          if (isLoading) const Center(child: CupertinoActivityIndicator()),
         ],
       ),
     );

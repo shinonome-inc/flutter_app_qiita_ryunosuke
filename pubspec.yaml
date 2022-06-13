@@ -18,6 +18,7 @@ dependencies:
   webview_flutter: ^3.0.2
   flutter_dotenv: ^5.0.2
   shared_preferences: ^2.0.15
+  webview_flutter_plus: ^0.3.0+2
 
 
   flutter:

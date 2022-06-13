@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/pages/top_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 import '../service/qiita_client.dart';
 
@@ -13,26 +17,24 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late WebViewController _webViewController;
+  WebViewPlusController? _controller;
   double _webViewHeight = 0;
 
   late final String uri;
 
-  Future<void> onPageFinished (BuildContext context, String url) async {
+  Future<void> onPageFinished(BuildContext context, String url) async {
     final uri = Uri.parse(url);
     if (uri.queryParameters['code'] != null) {
       onAuthorizeCallbackIsCalled(uri);
     }
-    await pageLoading(context , url);
+    await pageLoading(context, url);
   }
 
-  Future<void> pageLoading (BuildContext context, String url) async {
-    double newHeight = double.parse(
-      await _webViewController.runJavascriptReturningResult(
-          "document.documentElement.scrollHeight;"),
-    );
-    setState(() {
-      _webViewHeight = newHeight;
+  Future<void> pageLoading(BuildContext context, String url) async {
+    _controller?.getHeight().then((double height) {
+      setState(() {
+        _webViewHeight = height;
+      });
     });
   }
 
@@ -48,8 +50,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    double keybordHeight = MediaQuery.of(context).viewInsets.bottom;
     return SizedBox(
       height: size.height * 0.95,
       child: Column(
@@ -72,15 +83,14 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Flexible(
             child: SingleChildScrollView(
-              child: Container(
-                height: _webViewHeight,
-                color: Colors.white,
-                child: WebView(
+              child: SizedBox(
+                height: _webViewHeight + keybordHeight,
+                child: WebViewPlus(
                   initialUrl: QiitaClient.createAuthorizeUrl(),
                   javascriptMode: JavascriptMode.unrestricted,
                   onPageFinished: (String url) => onPageFinished(context, url),
-                  onWebViewCreated: (WebViewController webViewController) {
-                    _webViewController = webViewController;
+                  onWebViewCreated: (controller) async {
+                    _controller = controller;
                   },
                 ),
               ),
