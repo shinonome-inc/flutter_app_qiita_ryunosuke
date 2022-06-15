@@ -18,7 +18,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   WebViewPlusController? _controller;
-  double _webViewHeight = 0;
 
   late final String uri;
 
@@ -33,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> pageLoading(BuildContext context, String url) async {
     _controller?.getHeight().then((double height) {
       setState(() {
-        _webViewHeight = height;
+        height = height;
       });
     });
   }
@@ -59,44 +58,46 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    double keybordHeight = MediaQuery.of(context).viewInsets.bottom;
-    return SizedBox(
-      height: size.height * 0.95,
-      child: Column(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
-            ),
-            height: 59.0,
-            child: Center(
-              child: Text(
-                "Qiita Auth",
-                style: GoogleFonts.pacifico(
-                  fontSize: 17,
-                  color: Colors.black,
+    Size size = MediaQuery.of(context).size;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        reverse: true,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: keyboardHeight),
+          child: Column(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
+                ),
+                height: 59.0,
+                child: Center(
+                  child: Text(
+                    "Qiita Auth",
+                    style: GoogleFonts.pacifico(
+                      fontSize: 17,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Flexible(
-            child: SingleChildScrollView(
-              child: SizedBox(
-                height: _webViewHeight + keybordHeight,
+              SizedBox(
+                height: size.height,
                 child: WebViewPlus(
                   initialUrl: QiitaClient.createAuthorizeUrl(),
                   javascriptMode: JavascriptMode.unrestricted,
                   onPageFinished: (String url) => onPageFinished(context, url),
-                  onWebViewCreated: (controller) async {
+                  onWebViewCreated: (controller) {
                     _controller = controller;
                   },
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

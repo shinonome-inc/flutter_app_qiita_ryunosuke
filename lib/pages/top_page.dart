@@ -98,7 +98,10 @@ class _TopPageState extends State<TopPage> {
                           ),
                         ),
                         builder: (context) {
-                          return const LoginPage();
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.95,
+                            child: const LoginPage(),
+                          );
                         },
                       );
                     },
