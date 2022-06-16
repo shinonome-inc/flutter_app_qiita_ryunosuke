@@ -15,7 +15,10 @@ dependencies:
   http: ^0.13.4
   intl: ^0.17.0
   cached_network_image: ^3.2.0
-  webview_flutter: ^3.0.2
+  flutter_dotenv: ^5.0.2
+  shared_preferences: ^2.0.15
+  webview_flutter_plus: ^0.3.0+2
+
 
   flutter:
     sdk: flutter
@@ -40,6 +43,7 @@ flutter:
     - images/qiita.png
     - images/network_error.png
     - images/default_icon_image.png
+    - .env
 
 
 

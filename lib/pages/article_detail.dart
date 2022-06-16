@@ -58,9 +58,8 @@ class _ArticleDetailState extends State<ArticleDetail> {
         ),
         Flexible(
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: _webViewHeight,
-              color: Colors.white,
               child: WebView(
                 initialUrl: widget.article.url,
                 javascriptMode: JavascriptMode.unrestricted,
