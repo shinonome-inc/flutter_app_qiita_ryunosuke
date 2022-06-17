@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:flutter_app_qiita/pages/not_login_page.dart';
+import 'package:flutter_app_qiita/pages/user_page/follow_page.dart';
 
 import '../../../models/user.dart';
 import '../../../service/qiita_client.dart';
@@ -98,7 +99,6 @@ class _MypageState extends State<Mypage> {
   }
 }
 
-
 //my_pageのプロフィール表示用クラス
 class MyProfilePage extends StatefulWidget {
   final User user;
@@ -183,7 +183,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
       Row(
         children: <Widget>[
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) =>  FollowPage(user: widget.user,))));
+            },
             child: Text(widget.user.followingsCount.toString() + 'フォロー中'),
             style: TextButton.styleFrom(
               primary: Colors.black,

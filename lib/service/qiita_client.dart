@@ -150,4 +150,18 @@ class QiitaClient {
       throw Exception('Failed to load article');
     }
   }
+
+  static Future<List<User>> fetchFollowees(String userId) async {
+    final accessToken = await getAccessToken();
+    final url = "https://qiita.com/api/v2/users/$userId/followees";
+    final response = await http.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
+    if (response.statusCode == 200) {
+      final List<dynamic> followeesJsonArray = json.decode(response.body);
+      return followeesJsonArray.map((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load followees');
+    }
+  }
 }
