@@ -17,7 +17,7 @@ class FollowPage extends StatefulWidget {
 }
 
 class _FollowPageState extends State<FollowPage> {
-  late Future<List<User>> futureFolloweesList;
+  late Future<List<User>>? futureFolloweesList;
 
   @override
   void initState() {

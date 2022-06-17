@@ -155,7 +155,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         padding: EdgeInsets.fromLTRB(0, 16, 0, 4),
       ),
       Text(
-        widget.user.name,
+        widget.user.name!,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(color: Colors.black, fontSize: 14.0),
@@ -172,7 +172,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
       Container(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Text(
-          widget.user.description,
+          widget.user.description!,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(

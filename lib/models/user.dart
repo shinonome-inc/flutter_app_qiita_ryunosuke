@@ -1,11 +1,11 @@
 class User {
   final String id;
   final String iconUrl;
-  final String name;
-  final String description;
-  final int followingsCount;
-  final int followersCount;
-  final int posts;
+  final String? name;
+  final String? description;
+  final int? followingsCount;
+  final int? followersCount;
+  final int? posts;
 
   User({
     required this.id,

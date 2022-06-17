@@ -69,7 +69,7 @@ class UserListView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                user.name,
+                                user.name!,
                                 style: const TextStyle(
                                   fontSize: 17.0,
                                   color: Colors.black,
@@ -102,7 +102,7 @@ class UserListView extends StatelessWidget {
                             ),
                             const SizedBox(height: 8.0),
                             Text(
-                              user.description,
+                              user.description!,
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 12.0,
