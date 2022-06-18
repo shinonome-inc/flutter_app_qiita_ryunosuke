@@ -10,6 +10,7 @@ import '../../../service/qiita_client.dart';
 import '../../components/article_list_view.dart';
 import '../../models/article.dart';
 import '../error_page.dart';
+import 'follower_page.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({
@@ -187,7 +188,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: ((context) =>  FollowPage(user: widget.user,))));
+                      builder: ((context) => FollowPage(
+                            user: widget.user,
+                          ))));
             },
             child: Text(widget.user.followingsCount.toString() + 'フォロー中'),
             style: TextButton.styleFrom(
@@ -196,7 +199,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
           ),
           const SizedBox(height: 4.0),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => FollowerPage(user: widget.user))));
+            },
             child: Text(widget.user.followersCount.toString() + 'フォロワー'),
             style: TextButton.styleFrom(
               primary: Colors.black,

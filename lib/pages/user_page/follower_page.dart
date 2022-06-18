@@ -1,27 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
+import 'package:flutter_app_qiita/components/user_list_view.dart';
 import 'package:flutter_app_qiita/pages/error_page.dart';
 import 'package:flutter_app_qiita/service/qiita_client.dart';
 
-import '../../components/user_list_view.dart';
 import '../../models/user.dart';
 
-class FollowPage extends StatefulWidget {
+class FollowerPage extends StatefulWidget {
   final User user;
-
-  const FollowPage({Key? key, required this.user}) : super(key: key);
+  const FollowerPage({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<FollowPage> createState() => _FollowPageState();
+  State<FollowerPage> createState() => _FollowerPageState();
 }
 
-class _FollowPageState extends State<FollowPage> {
-  late Future<List<User>>? futureFolloweesList;
-
+class _FollowerPageState extends State<FollowerPage> {
+  late Future<List<User>> futureFollowerList;
   @override
   void initState() {
-    futureFolloweesList = QiitaClient.fetchFollowees(widget.user.id);
+    futureFollowerList = QiitaClient.fetchFollowers(widget.user.id);
     super.initState();
   }
 
@@ -29,21 +27,21 @@ class _FollowPageState extends State<FollowPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarDesign(
-        text: 'Follows',
+        text: 'Followers',
         useBackButton: true,
       ),
       body: FutureBuilder<List<User>>(
-        future: futureFolloweesList,
+        future: futureFollowerList,
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             return UserListView(users: snapshot.data!);
           } else if (snapshot.hasError) {
             return ErrorPage(onTapReload: () {
-              futureFolloweesList = QiitaClient.fetchFollowees(widget.user.id);
+              futureFollowerList = QiitaClient.fetchFollowers(widget.user.id);
             });
           } else if (snapshot.data?.isEmpty == true) {
             return const Center(
-              child: Text('フォローなし'),
+              child: Text('フォロワーなし'),
             );
           }
           return const Padding(
