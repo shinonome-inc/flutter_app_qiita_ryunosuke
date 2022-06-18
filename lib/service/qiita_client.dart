@@ -181,4 +181,35 @@ class QiitaClient {
       throw Exception('Failed to load followers');
     }
   }
+
+  static Future<User> fetchUserProfile(String userId) async {
+    final accessToken = await getAccessToken();
+    final url = "https://qiita.com/api/v2/users/$userId";
+    final response = await http.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
+    if (response.statusCode == 200) {
+      Map<String, dynamic> userData = json.decode(response.body);
+      var user = User.fromJson(userData);
+      return user;
+    } else {
+      throw Exception('Failed to load article');
+    }
+  }
+
+  static Future<List<Article>> fetchUserArticle(String userId, int page) async {
+    final accessToken = await getAccessToken();
+    final url = "https://qiita.com/api/v2/users/$userId/items?page=$page";
+    final response = await http.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
+    if (response.statusCode == 200) {
+      final List<dynamic> userArticleJsonArray = json.decode(response.body);
+      return userArticleJsonArray
+          .map((json) => Article.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load article');
+    }
+  }
 }

@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
-import 'package:flutter_app_qiita/pages/not_login_page.dart';
 import 'package:flutter_app_qiita/pages/user_page/follow_page.dart';
 
 import '../../../models/user.dart';
@@ -12,29 +11,25 @@ import '../../models/article.dart';
 import '../error_page.dart';
 import 'follower_page.dart';
 
-class Mypage extends StatefulWidget {
-  const Mypage({
-    Key? key,
-  }) : super(key: key);
+class UserPage extends StatefulWidget {
+  final User user;
+  const UserPage({Key? key, required this.user}) : super(key: key);
   @override
-  _MypageState createState() => _MypageState();
+  _UserPageState createState() => _UserPageState();
 }
 
-class _MypageState extends State<Mypage> {
-  Future<User>? myProfile;
+class _UserPageState extends State<UserPage> {
+  Future<User>? userProfile;
   bool accessTokenIsSaved = false;
-  late User? user;
 
   int page = 1;
 
-  Widget notLoginView() => const NotLoginPage();
-
   void reload() {
-    myProfile = QiitaClient.fetchMyProfile();
+    userProfile = QiitaClient.fetchUserProfile(widget.user.id);
   }
 
   Future<void> onRefreshUser() async {
-    myProfile = QiitaClient.fetchMyProfile();
+    userProfile = QiitaClient.fetchUserProfile(widget.user.id);
   }
 
   void confAccessTokenIsSaved() async {
@@ -52,9 +47,12 @@ class _MypageState extends State<Mypage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     if (accessTokenIsSaved) {
-      myProfile = QiitaClient.fetchMyProfile();
+      userProfile = QiitaClient.fetchUserProfile(widget.user.id);
       return Scaffold(
-        appBar: AppBarDesign(text: 'MyPage'),
+        appBar: AppBarDesign(
+          text: 'Users',
+          useBackButton: true,
+        ),
         body: Column(
           children: [
             Flexible(
@@ -65,10 +63,10 @@ class _MypageState extends State<Mypage> {
                   edgeOffset: -500,
                   onRefresh: onRefreshUser,
                   child: FutureBuilder<User>(
-                    future: myProfile,
+                    future: userProfile,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return MyProfilePage(user: snapshot.data!);
+                        return UserProfilePage(user: snapshot.data!);
                       } else if (snapshot.hasError) {
                         return ErrorPage(
                           onTapReload: () {
@@ -94,39 +92,41 @@ class _MypageState extends State<Mypage> {
         ),
       );
     } else {
-      return notLoginView();
+      return const Center(
+        child: Text('データなし'),
+      );
     }
   }
 }
 
-//my_pageのプロフィール表示用クラス
-class MyProfilePage extends StatefulWidget {
+//user_pageのプロフィール表示用クラス
+class UserProfilePage extends StatefulWidget {
   final User user;
-  const MyProfilePage({Key? key, required this.user}) : super(key: key);
+  const UserProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<MyProfilePage> createState() => _MyProfilePageState();
+  State<UserProfilePage> createState() => _UserProfilePageState();
 }
 
-class _MyProfilePageState extends State<MyProfilePage> {
-  late Future<List<Article>> futureMyArticles;
-  late List<Article> myArticles;
+class _UserProfilePageState extends State<UserProfilePage> {
+  late Future<List<Article>> futureUserArticles;
+  late List<Article> userArticles;
   int page = 1;
 
   Future<void> onRefresh() async {
-    futureMyArticles = QiitaClient.fetchMyArticle(page);
+    futureUserArticles = QiitaClient.fetchUserArticle(widget.user.id, page);
   }
 
   Future<void> addItems(int page) async {
-    var items = await QiitaClient.fetchMyArticle(page);
+    var items = await QiitaClient.fetchUserArticle(widget.user.id, page);
     setState(() {
-      myArticles.addAll(items);
+      userArticles.addAll(items);
     });
   }
 
   @override
   void initState() {
-    futureMyArticles = QiitaClient.fetchMyArticle(page);
+    futureUserArticles = QiitaClient.fetchUserArticle(widget.user.id, page);
     super.initState();
   }
 
@@ -245,7 +245,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             return true;
           },
           child: FutureBuilder<List<Article>>(
-            future: futureMyArticles,
+            future: futureUserArticles,
             builder:
                 (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
               if (snapshot.hasData) {
@@ -263,7 +263,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 );
               } else if (snapshot.hasError) {
                 return ErrorPage(onTapReload: () {
-                  futureMyArticles = QiitaClient.fetchMyArticle(page);
+                  futureUserArticles =
+                      QiitaClient.fetchUserArticle(widget.user.id, page);
                 });
               } else {
                 return const CupertinoActivityIndicator();
