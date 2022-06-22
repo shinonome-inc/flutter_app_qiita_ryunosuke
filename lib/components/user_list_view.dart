@@ -27,12 +27,12 @@ class UserListView extends StatelessWidget {
                           ))));
             },
             child: Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
+                elevation: 0,
+                shape: const RoundedRectangleBorder(
                   side: BorderSide(
-                    color: Theme.of(context).colorScheme.outline,
+                    color: Color(0xFFE0E0E0),
                   ),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
                 child: SizedBox(
                   child: Column(
