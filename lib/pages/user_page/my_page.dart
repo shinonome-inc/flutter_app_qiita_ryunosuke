@@ -29,8 +29,10 @@ class _MypageState extends State<Mypage> {
 
   Widget notLoginView() => const NotLoginPage();
 
-  void reload() {
-    myProfile = QiitaClient.fetchMyProfile();
+  void reloadMyProfile() {
+    setState(() {
+      myProfile = QiitaClient.fetchMyProfile();
+    });
   }
 
   Future<void> onRefreshUser() async {
@@ -62,7 +64,6 @@ class _MypageState extends State<Mypage> {
                 height: size.height,
                 width: size.width,
                 child: RefreshIndicator(
-                  edgeOffset: -500,
                   onRefresh: onRefreshUser,
                   child: FutureBuilder<User>(
                     future: myProfile,
@@ -72,7 +73,7 @@ class _MypageState extends State<Mypage> {
                       } else if (snapshot.hasError) {
                         return ErrorPage(
                           onTapReload: () {
-                            reload();
+                            reloadMyProfile();
                           },
                         );
                       }
@@ -236,40 +237,18 @@ class _MyProfilePageState extends State<MyProfilePage> {
             ),
           ),
         ),
-        NotificationListener<ScrollEndNotification>(
-          onNotification: (notification) {
-            final metrics = notification.metrics;
-            if (metrics.extentAfter == 0) {
-              addItems(++page);
+        FutureBuilder<List<Article>>(
+          future: futureMyArticles,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
+            if (snapshot.hasData) {
+              return ArticleListView(
+                articles: snapshot.data!,
+              );
+            } else {
+              return const CupertinoActivityIndicator();
             }
-            return true;
           },
-          child: FutureBuilder<List<Article>>(
-            future: futureMyArticles,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-              if (snapshot.hasData) {
-                return RefreshIndicator(
-                  onRefresh: onRefresh,
-                  child: (() {
-                    if (snapshot.data?.isEmpty ?? true) {
-                      return const Center(child: Text("まだ投稿がありません"));
-                    } else {
-                      return ArticleListView(
-                        articles: snapshot.data!,
-                      );
-                    }
-                  })(),
-                );
-              } else if (snapshot.hasError) {
-                return ErrorPage(onTapReload: () {
-                  futureMyArticles = QiitaClient.fetchMyArticle(page);
-                });
-              } else {
-                return const CupertinoActivityIndicator();
-              }
-            },
-          ),
         ),
       ],
     );

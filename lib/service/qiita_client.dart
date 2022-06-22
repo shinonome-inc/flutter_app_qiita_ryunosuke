@@ -147,7 +147,7 @@ class QiitaClient {
       final List<dynamic> articleJsonArray = json.decode(response.body);
       return articleJsonArray.map((json) => Article.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load article');
+      throw Exception('Request failed with status: ${response.statusCode}');
     }
   }
 
