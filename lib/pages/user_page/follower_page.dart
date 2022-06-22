@@ -37,7 +37,9 @@ class _FollowerPageState extends State<FollowerPage> {
             return UserListView(users: snapshot.data!);
           } else if (snapshot.hasError) {
             return ErrorPage(onTapReload: () {
-              futureFollowerList = QiitaClient.fetchFollowers(widget.user.id);
+              setState(() {
+                futureFollowerList = QiitaClient.fetchFollowers(widget.user.id);
+              });
             });
           } else if (snapshot.data?.isEmpty == true) {
             return const Center(
