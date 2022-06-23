@@ -3,9 +3,9 @@ class User {
   final String iconUrl;
   final String? name;
   final String? description;
-  final int? followingsCount;
-  final int? followersCount;
-  final int? posts;
+  final int followingsCount;
+  final int followersCount;
+  final int posts;
 
   User({
     required this.id,
@@ -21,7 +21,7 @@ class User {
     return User(
       id: json['id'],
       iconUrl: json['profile_image_url'],
-      name: json['name'] == '' ? 'ユーザー名未設定' : json['name'],
+      name: json['name'] == '' ? json['id'] : json['name'],
       description: json['description'] ?? 'description未設定',
       followingsCount: json['followees_count'],
       followersCount: json['followers_count'],
