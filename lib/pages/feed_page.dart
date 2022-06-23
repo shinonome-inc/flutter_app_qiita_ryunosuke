@@ -98,7 +98,7 @@ class _FeedPageState extends State<FeedPage> {
       body: Container(
         color: Colors.white,
         child: NotificationListener<ScrollEndNotification>(
-          onNotification: (notification) {
+          onNotification: (notification) {  
             final metrics = notification.metrics;
             if (metrics.extentAfter == 0) {
               addItems(++page);

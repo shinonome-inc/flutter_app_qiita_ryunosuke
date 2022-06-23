@@ -147,6 +147,53 @@ class QiitaClient {
       final List<dynamic> articleJsonArray = json.decode(response.body);
       return articleJsonArray.map((json) => Article.fromJson(json)).toList();
     } else {
+      throw Exception('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+  static Future<List<User>> fetchFollowees(String userId) async {
+    final accessToken = await getAccessToken();
+    final url = "https://qiita.com/api/v2/users/$userId/followees";
+    final response = await http.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
+    if (response.statusCode == 200) {
+      final List<dynamic> followeesJsonArray = json.decode(response.body);
+      return followeesJsonArray.map((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load followees');
+    }
+  }
+
+  static Future<List<User>> fetchFollowers(String userId) async {
+    final accessToken = await getAccessToken();
+    final _url = "https://qiita.com/api/v2/users/$userId/followers";
+    final response = await http.get(
+      Uri.parse(_url),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> followersJsonArray = json.decode(response.body);
+      return followersJsonArray.map((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load followers');
+    }
+  }
+
+  static Future<List<Article>> fetchUserArticle(String userId, int page) async {
+    final accessToken = await getAccessToken();
+    final url = "https://qiita.com/api/v2/users/$userId/items?page=$page";
+    final response = await http.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
+    if (response.statusCode == 200) {
+      final List<dynamic> userArticleJsonArray = json.decode(response.body);
+      return userArticleJsonArray
+          .map((json) => Article.fromJson(json))
+          .toList();
+    } else {
       throw Exception('Failed to load article');
     }
   }

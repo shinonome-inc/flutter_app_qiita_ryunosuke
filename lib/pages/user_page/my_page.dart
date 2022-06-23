@@ -3,12 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:flutter_app_qiita/pages/not_login_page.dart';
+import 'package:flutter_app_qiita/pages/user_page/follow_page.dart';
 
 import '../../../models/user.dart';
 import '../../../service/qiita_client.dart';
 import '../../components/article_list_view.dart';
 import '../../models/article.dart';
 import '../error_page.dart';
+import 'follower_page.dart';
 
 class Mypage extends StatefulWidget {
   const Mypage({
@@ -21,15 +23,16 @@ class Mypage extends StatefulWidget {
 class _MypageState extends State<Mypage> {
   Future<User>? myProfile;
   bool accessTokenIsSaved = false;
-  bool hasSnapshot = false;
   late User? user;
 
   int page = 1;
 
   Widget notLoginView() => const NotLoginPage();
 
-  void reload() {
-    myProfile = QiitaClient.fetchMyProfile();
+  void reloadMyProfile() {
+    setState(() {
+      myProfile = QiitaClient.fetchMyProfile();
+    });
   }
 
   Future<void> onRefreshUser() async {
@@ -61,7 +64,6 @@ class _MypageState extends State<Mypage> {
                 height: size.height,
                 width: size.width,
                 child: RefreshIndicator(
-                  edgeOffset: -500,
                   onRefresh: onRefreshUser,
                   child: FutureBuilder<User>(
                     future: myProfile,
@@ -71,7 +73,7 @@ class _MypageState extends State<Mypage> {
                       } else if (snapshot.hasError) {
                         return ErrorPage(
                           onTapReload: () {
-                            reload();
+                            reloadMyProfile();
                           },
                         );
                       }
@@ -97,7 +99,6 @@ class _MypageState extends State<Mypage> {
     }
   }
 }
-
 
 //my_pageのプロフィール表示用クラス
 class MyProfilePage extends StatefulWidget {
@@ -155,7 +156,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         padding: EdgeInsets.fromLTRB(0, 16, 0, 4),
       ),
       Text(
-        widget.user.name,
+        widget.user.name!,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(color: Colors.black, fontSize: 14.0),
@@ -172,7 +173,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
       Container(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Text(
-          widget.user.description,
+          widget.user.description!,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
@@ -183,7 +184,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
       Row(
         children: <Widget>[
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => FollowPage(
+                            user: widget.user,
+                          ))));
+            },
             child: Text(widget.user.followingsCount.toString() + 'フォロー中'),
             style: TextButton.styleFrom(
               primary: Colors.black,
@@ -191,7 +199,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
           ),
           const SizedBox(height: 4.0),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => FollowerPage(user: widget.user))));
+            },
             child: Text(widget.user.followersCount.toString() + 'フォロワー'),
             style: TextButton.styleFrom(
               primary: Colors.black,
@@ -224,40 +237,18 @@ class _MyProfilePageState extends State<MyProfilePage> {
             ),
           ),
         ),
-        NotificationListener<ScrollEndNotification>(
-          onNotification: (notification) {
-            final metrics = notification.metrics;
-            if (metrics.extentAfter == 0) {
-              addItems(++page);
+        FutureBuilder<List<Article>>(
+          future: futureMyArticles,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
+            if (snapshot.hasData) {
+              return ArticleListView(
+                articles: snapshot.data!,
+              );
+            } else {
+              return const CupertinoActivityIndicator();
             }
-            return true;
           },
-          child: FutureBuilder<List<Article>>(
-            future: futureMyArticles,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-              if (snapshot.hasData) {
-                return RefreshIndicator(
-                  onRefresh: onRefresh,
-                  child: (() {
-                    if (snapshot.data?.isEmpty ?? true) {
-                      return const Center(child: Text("まだ投稿がありません"));
-                    } else {
-                      return ArticleListView(
-                        articles: snapshot.data!,
-                      );
-                    }
-                  })(),
-                );
-              } else if (snapshot.hasError) {
-                return ErrorPage(onTapReload: () {
-                  futureMyArticles = QiitaClient.fetchMyArticle(page);
-                });
-              } else {
-                return const CupertinoActivityIndicator();
-              }
-            },
-          ),
         ),
       ],
     );
