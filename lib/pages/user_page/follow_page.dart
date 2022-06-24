@@ -22,9 +22,7 @@ class _FollowPageState extends State<FollowPage> {
   int page = 1;
 
   Future<void> onRefresh() async {
-    setState(() {
-      futureFolloweesList = QiitaClient.fetchFollowees(widget.user.id, 1);
-    });
+    futureFolloweesList = QiitaClient.fetchFollowees(widget.user.id, 1);
   }
 
   Future<void> addItems(int page) async {
