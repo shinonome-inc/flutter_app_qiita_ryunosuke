@@ -17,9 +17,10 @@ class FollowerPage extends StatefulWidget {
 
 class _FollowerPageState extends State<FollowerPage> {
   late Future<List<User>> futureFollowerList;
+  int page = 1;
   @override
   void initState() {
-    futureFollowerList = QiitaClient.fetchFollowers(widget.user.id);
+    futureFollowerList = QiitaClient.fetchFollowers(widget.user.id, 1);
     super.initState();
   }
 
@@ -38,7 +39,8 @@ class _FollowerPageState extends State<FollowerPage> {
           } else if (snapshot.hasError) {
             return ErrorPage(onTapReload: () {
               setState(() {
-                futureFollowerList = QiitaClient.fetchFollowers(widget.user.id);
+                futureFollowerList =
+                    QiitaClient.fetchFollowers(widget.user.id, 1);
               });
             });
           } else if (snapshot.data?.isEmpty == true) {
