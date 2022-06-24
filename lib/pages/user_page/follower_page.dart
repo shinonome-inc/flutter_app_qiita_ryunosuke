@@ -17,9 +17,23 @@ class FollowerPage extends StatefulWidget {
 
 class _FollowerPageState extends State<FollowerPage> {
   late Future<List<User>> futureFollowerList;
+  late List<User> followerList;
+  int page = 1;
+
+  Future<void> onRefresh() async {
+    futureFollowerList = QiitaClient.fetchFollowers(widget.user.id, 1);
+  }
+
+  Future<void> addItems(int page) async {
+    var newItems = await QiitaClient.fetchFollowers(widget.user.id, page);
+    setState(() {
+      followerList.addAll(newItems);
+    });
+  }
+
   @override
   void initState() {
-    futureFollowerList = QiitaClient.fetchFollowers(widget.user.id);
+    futureFollowerList = QiitaClient.fetchFollowers(widget.user.id, 1);
     super.initState();
   }
 
@@ -30,30 +44,46 @@ class _FollowerPageState extends State<FollowerPage> {
         text: 'Followers',
         useBackButton: true,
       ),
-      body: FutureBuilder<List<User>>(
-        future: futureFollowerList,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            return UserListView(users: snapshot.data!);
-          } else if (snapshot.hasError) {
-            return ErrorPage(onTapReload: () {
-              setState(() {
-                futureFollowerList = QiitaClient.fetchFollowers(widget.user.id);
-              });
-            });
-          } else if (snapshot.data?.isEmpty == true) {
-            return const Center(
-              child: Text('フォロワーなし'),
-            );
+      body: NotificationListener<ScrollEndNotification>(
+        onNotification: (notification) {
+          final metrics = notification.metrics;
+          if (metrics.extentAfter == 0) {
+            addItems(++page);
           }
-          return const Padding(
-            padding: EdgeInsets.only(top: 5.0),
-            child: Center(
-              child: SizedBox(
-                  height: 30, width: 30, child: CupertinoActivityIndicator()),
-            ),
-          );
+          return true;
         },
+        child: RefreshIndicator(
+          onRefresh: onRefresh,
+          child: FutureBuilder<List<User>>(
+            future: futureFollowerList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                followerList = snapshot.data as List<User>;
+                return UserListView(users: followerList);
+              } else if (snapshot.hasError) {
+                return ErrorPage(onTapReload: () {
+                  setState(() {
+                    futureFollowerList =
+                        QiitaClient.fetchFollowers(widget.user.id, 1);
+                  });
+                });
+              } else if (snapshot.data?.isEmpty == true) {
+                return const Center(
+                  child: Text('フォロワーなし'),
+                );
+              }
+              return const Padding(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Center(
+                  child: SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: CupertinoActivityIndicator()),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
