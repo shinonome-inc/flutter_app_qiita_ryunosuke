@@ -154,7 +154,7 @@ class QiitaClient {
   static Future<List<User>> fetchFollowees(String userId, int page) async {
     final accessToken = await getAccessToken();
     final url =
-        "https://qiita.com/api/v2/users/$userId/followees?page=$page&per_page=5";
+        "https://qiita.com/api/v2/users/$userId/followees?page=$page&per_page=20";
     final response = await http.get(Uri.parse(url), headers: {
       'Authorization': 'Bearer $accessToken',
     });
@@ -169,7 +169,7 @@ class QiitaClient {
   static Future<List<User>> fetchFollowers(String userId, int page) async {
     final accessToken = await getAccessToken();
     final _url =
-        "https://qiita.com/api/v2/users/$userId/followers?page=$page&per_page=5";
+        "https://qiita.com/api/v2/users/$userId/followers?page=$page&per_page=20";
     final response = await http.get(
       Uri.parse(_url),
       headers: {
