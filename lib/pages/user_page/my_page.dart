@@ -2,12 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
+import 'package:flutter_app_qiita/components/user_page_article_list.dart';
 import 'package:flutter_app_qiita/pages/not_login_page.dart';
 import 'package:flutter_app_qiita/pages/user_page/follow_page.dart';
 
 import '../../../models/user.dart';
 import '../../../service/qiita_client.dart';
-import '../../components/article_list_view.dart';
+
 import '../../models/article.dart';
 import '../error_page.dart';
 import 'follower_page.dart';
@@ -242,9 +243,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
           builder:
               (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
             if (snapshot.hasData) {
-              return ArticleListView(
-                articles: snapshot.data!,
-              );
+              return UserPageArticleList(
+                  articles: snapshot.data!, userId: widget.user.id);
             } else {
               return const CupertinoActivityIndicator();
             }
