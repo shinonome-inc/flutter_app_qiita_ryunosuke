@@ -23,8 +23,6 @@ class _UserPageState extends State<UserPage> {
 
   int page = 1;
 
-  Widget notLoginView() => const NotLoginPage();
-
   void reloadUserProfile() {
     setState(() {
       userProfile = QiitaClient.fetchUserProfile(widget.user.id);
@@ -94,7 +92,7 @@ class _UserPageState extends State<UserPage> {
         ),
       );
     } else {
-      return notLoginView();
+      return const NotLoginPage();
     }
   }
 }

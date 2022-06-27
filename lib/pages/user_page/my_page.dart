@@ -28,8 +28,6 @@ class _MypageState extends State<Mypage> {
 
   int page = 1;
 
-  Widget notLoginView() => const NotLoginPage();
-
   void reloadMyProfile() {
     setState(() {
       myProfile = QiitaClient.fetchMyProfile();
@@ -96,7 +94,7 @@ class _MypageState extends State<Mypage> {
         ),
       );
     } else {
-      return notLoginView();
+      return const NotLoginPage();
     }
   }
 }
