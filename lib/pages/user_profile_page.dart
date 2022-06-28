@@ -24,6 +24,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
   late List<Article> userArticles;
   int page = 1;
 
+  Future<void> onRefresh() async {
+    var newItems = await QiitaClient.fetchUserArticle(widget.user.id, 1);
+    setState(() {
+      userArticles.clear();
+      userArticles.addAll(newItems);
+    });
+  }
+
   Widget userProfile() {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(
@@ -150,18 +158,21 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ),
         ),
         Expanded(
-          child: FutureBuilder<List<Article>>(
-            future: futureUserArticles,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-              if (snapshot.hasData) {
-                userArticles = snapshot.data as List<Article>;
-                return UserPageArticleList(
-                    articles: snapshot.data!, userId: widget.user.id);
-              } else {
-                return const CupertinoActivityIndicator();
-              }
-            },
+          child: RefreshIndicator(
+            onRefresh: onRefresh,
+            child: FutureBuilder<List<Article>>(
+              future: futureUserArticles,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Article>> snapshot) {
+                if (snapshot.hasData) {
+                  userArticles = snapshot.data as List<Article>;
+                  return UserPageArticleList(
+                      articles: snapshot.data!, userId: widget.user.id);
+                } else {
+                  return const CupertinoActivityIndicator();
+                }
+              },
+            ),
           ),
         ),
       ],
