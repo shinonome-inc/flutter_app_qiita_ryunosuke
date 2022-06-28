@@ -167,7 +167,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 if (snapshot.hasData) {
                   userArticles = snapshot.data as List<Article>;
                   return UserPageArticleList(
-                      articles: snapshot.data!, userId: widget.user.id);
+                      articles: userArticles, userId: widget.user.id);
                 } else {
                   return const CupertinoActivityIndicator();
                 }

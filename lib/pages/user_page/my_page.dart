@@ -121,7 +121,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
     });
   }
 
-
   Future<void> addItems(int page) async {
     var items = await QiitaClient.fetchMyArticle(page);
     setState(() {
@@ -261,10 +260,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
           builder:
               (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
             if (snapshot.hasData) {
+              myArticles = snapshot.data!;
               return RefreshIndicator(
                 onRefresh: onRefresh,
                 child: UserPageArticleList(
-                    articles: snapshot.data!, userId: widget.user.id),
+                    articles: myArticles, userId: widget.user.id),
               );
             } else {
               return const CupertinoActivityIndicator();
