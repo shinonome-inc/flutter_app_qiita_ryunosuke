@@ -147,6 +147,19 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 shape: BoxShape.circle,
               ),
             ),
+            placeholder: (context, url) => const SizedBox(
+                width: 80.0, height: 80.0, child: CupertinoActivityIndicator()),
+            errorWidget: (context, url, error) => Container(
+              width: 80.0,
+              height: 80.0,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/default_icon_image.png'),
+                  fit: BoxFit.cover,
+                ),
+                shape: BoxShape.circle,
+              ),
+            ),
           ),
           const Spacer(),
         ],
@@ -218,9 +231,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.only(left: 24.0, top: 25.0),
-          child: myProfile(),
+        SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.only(left: 24.0, top: 25.0),
+            child: myProfile(),
+          ),
         ),
         Container(
           height: 28,
@@ -241,8 +256,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
           builder:
               (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
             if (snapshot.hasData) {
-              return UserPageArticleList(
-                  articles: snapshot.data!, userId: widget.user.id);
+              return RefreshIndicator(
+                onRefresh: onRefresh,
+                child: UserPageArticleList(
+                    articles: snapshot.data!, userId: widget.user.id),
+              );
             } else {
               return const CupertinoActivityIndicator();
             }
