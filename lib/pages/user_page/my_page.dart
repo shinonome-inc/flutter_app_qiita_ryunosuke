@@ -114,8 +114,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
   int page = 1;
 
   Future<void> onRefresh() async {
-    futureMyArticles = QiitaClient.fetchMyArticle(page);
+    var newItems = await QiitaClient.fetchMyArticle(1);
+    setState(() {
+      myArticles.clear();
+      myArticles.addAll(newItems);
+    });
   }
+
 
   Future<void> addItems(int page) async {
     var items = await QiitaClient.fetchMyArticle(page);
