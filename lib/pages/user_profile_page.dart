@@ -159,6 +159,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         ),
         Expanded(
           child: RefreshIndicator(
+            edgeOffset: -500,
             onRefresh: onRefresh,
             child: FutureBuilder<List<Article>>(
               future: futureUserArticles,

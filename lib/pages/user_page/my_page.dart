@@ -35,7 +35,9 @@ class _MypageState extends State<Mypage> {
   }
 
   Future<void> onRefreshUser() async {
-    myProfile = QiitaClient.fetchMyProfile();
+    setState(() {
+      myProfile = QiitaClient.fetchMyProfile();
+    });
   }
 
   void confAccessTokenIsSaved() async {
@@ -63,6 +65,7 @@ class _MypageState extends State<Mypage> {
                 height: size.height,
                 width: size.width,
                 child: RefreshIndicator(
+                  edgeOffset: -500,
                   onRefresh: onRefreshUser,
                   child: FutureBuilder<User>(
                     future: myProfile,
@@ -262,6 +265,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             if (snapshot.hasData) {
               myArticles = snapshot.data!;
               return RefreshIndicator(
+                edgeOffset: -500,
                 onRefresh: onRefresh,
                 child: UserPageArticleList(
                     articles: myArticles, userId: widget.user.id),

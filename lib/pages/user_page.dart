@@ -30,7 +30,9 @@ class _UserPageState extends State<UserPage> {
   }
 
   Future<void> onRefreshUser() async {
-    userProfile = QiitaClient.fetchUserProfile(widget.user.id);
+    setState(() {
+      userProfile = QiitaClient.fetchUserProfile(widget.user.id);
+    });
   }
 
   void confAccessTokenIsSaved() async {
@@ -61,6 +63,7 @@ class _UserPageState extends State<UserPage> {
                 height: size.height,
                 width: size.width,
                 child: RefreshIndicator(
+                  edgeOffset: -500,
                   onRefresh: onRefreshUser,
                   child: FutureBuilder<User>(
                     future: userProfile,
