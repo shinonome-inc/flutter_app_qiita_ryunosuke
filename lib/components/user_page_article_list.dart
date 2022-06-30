@@ -45,12 +45,18 @@ class _UserPageArticleListState extends State<UserPageArticleList> {
                     style: const TextStyle(
                       fontSize: 12,
                     ),
+                    strutStyle: const StrutStyle(
+                      height: 1.3,
+                    ),
                   ),
                   const SizedBox(width: 3.0),
                   Text(
                     'LGTM:' + article.likesCount.toString(),
                     style: const TextStyle(
                       fontSize: 12,
+                    ),
+                    strutStyle: const StrutStyle(
+                      height: 1.3,
                     ),
                   ),
                 ],
