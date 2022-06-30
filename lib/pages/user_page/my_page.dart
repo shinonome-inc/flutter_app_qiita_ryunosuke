@@ -2,12 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
+import 'package:flutter_app_qiita/components/user_page_article_list.dart';
 import 'package:flutter_app_qiita/pages/not_login_page.dart';
 import 'package:flutter_app_qiita/pages/user_page/follow_page.dart';
 
 import '../../../models/user.dart';
 import '../../../service/qiita_client.dart';
-import '../../components/article_list_view.dart';
+
 import '../../models/article.dart';
 import '../error_page.dart';
 import 'follower_page.dart';
@@ -27,8 +28,6 @@ class _MypageState extends State<Mypage> {
 
   int page = 1;
 
-  Widget notLoginView() => const NotLoginPage();
-
   void reloadMyProfile() {
     setState(() {
       myProfile = QiitaClient.fetchMyProfile();
@@ -36,7 +35,9 @@ class _MypageState extends State<Mypage> {
   }
 
   Future<void> onRefreshUser() async {
-    myProfile = QiitaClient.fetchMyProfile();
+    setState(() {
+      myProfile = QiitaClient.fetchMyProfile();
+    });
   }
 
   void confAccessTokenIsSaved() async {
@@ -64,6 +65,7 @@ class _MypageState extends State<Mypage> {
                 height: size.height,
                 width: size.width,
                 child: RefreshIndicator(
+                  edgeOffset: -500,
                   onRefresh: onRefreshUser,
                   child: FutureBuilder<User>(
                     future: myProfile,
@@ -95,7 +97,7 @@ class _MypageState extends State<Mypage> {
         ),
       );
     } else {
-      return notLoginView();
+      return const NotLoginPage();
     }
   }
 }
@@ -115,7 +117,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
   int page = 1;
 
   Future<void> onRefresh() async {
-    futureMyArticles = QiitaClient.fetchMyArticle(page);
+    var newItems = await QiitaClient.fetchMyArticle(1);
+    setState(() {
+      myArticles.clear();
+      myArticles.addAll(newItems);
+    });
   }
 
   Future<void> addItems(int page) async {
@@ -143,6 +149,19 @@ class _MyProfilePageState extends State<MyProfilePage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+                shape: BoxShape.circle,
+              ),
+            ),
+            placeholder: (context, url) => const SizedBox(
+                width: 80.0, height: 80.0, child: CupertinoActivityIndicator()),
+            errorWidget: (context, url, error) => Container(
+              width: 80.0,
+              height: 80.0,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/default_icon_image.png'),
                   fit: BoxFit.cover,
                 ),
                 shape: BoxShape.circle,
@@ -219,9 +238,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.only(left: 24.0, top: 25.0),
-          child: myProfile(),
+        SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.only(left: 24.0, top: 25.0),
+            child: myProfile(),
+          ),
         ),
         Container(
           height: 28,
@@ -242,8 +263,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
           builder:
               (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
             if (snapshot.hasData) {
-              return ArticleListView(
-                articles: snapshot.data!,
+              myArticles = snapshot.data!;
+              return RefreshIndicator(
+                edgeOffset: -500,
+                onRefresh: onRefresh,
+                child: UserPageArticleList(
+                    articles: myArticles, userId: widget.user.id),
               );
             } else {
               return const CupertinoActivityIndicator();

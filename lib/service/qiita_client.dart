@@ -199,4 +199,19 @@ class QiitaClient {
       throw Exception('Failed to load article');
     }
   }
+
+  static Future<User> fetchUserProfile(String userId) async {
+    final accessToken = await getAccessToken();
+    final url = "https://qiita.com/api/v2/users/$userId";
+    final response = await http.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> userDataJsonArray = json.decode(response.body);
+      var userData = User.fromJson(userDataJsonArray);
+      return userData;
+    } else {
+      throw Exception('Failed to load userData');
+    }
+  }
 }

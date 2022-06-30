@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_qiita/pages/user_page.dart';
 
 import '../models/user.dart';
 
@@ -17,7 +18,12 @@ class UserListView extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserPage(user: user)),
+              );
+            },
             child: Card(
                 elevation: 0,
                 shape: const RoundedRectangleBorder(

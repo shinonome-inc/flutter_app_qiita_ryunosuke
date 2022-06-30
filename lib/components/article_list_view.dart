@@ -84,6 +84,7 @@ class _ArticleListViewState extends State<ArticleListView> {
                         style: const TextStyle(
                           fontSize: 12,
                         ),
+                        strutStyle: const StrutStyle(height: 1.3),
                       ),
                       const SizedBox(width: 3.0),
                       Text(
@@ -91,6 +92,7 @@ class _ArticleListViewState extends State<ArticleListView> {
                         style: const TextStyle(
                           fontSize: 12,
                         ),
+                        strutStyle: const StrutStyle(height: 1.3),
                       ),
                     ],
                   ),
