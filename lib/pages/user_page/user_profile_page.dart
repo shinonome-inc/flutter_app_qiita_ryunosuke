@@ -32,6 +32,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
     });
   }
 
+  Future<void> addItems(int page) async {
+    var items = await QiitaClient.fetchUserArticle(widget.user.id, page);
+    setState(() {
+      userArticles.addAll(items);
+    });
+  }
+
   Widget userProfile() {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(
@@ -158,21 +165,30 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ),
         ),
         Expanded(
-          child: RefreshIndicator(
-            edgeOffset: -500,
-            onRefresh: onRefresh,
-            child: FutureBuilder<List<Article>>(
-              future: futureUserArticles,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Article>> snapshot) {
-                if (snapshot.hasData) {
-                  userArticles = snapshot.data as List<Article>;
-                  return UserPageArticleList(
-                      articles: userArticles, userId: widget.user.id);
-                } else {
-                  return const CupertinoActivityIndicator();
-                }
-              },
+          child: NotificationListener<ScrollEndNotification>(
+            onNotification: (notification) {
+              final metrics = notification.metrics;
+              if (metrics.extentAfter == 0) {
+                addItems(++page);
+              }
+              return true;
+            },
+            child: RefreshIndicator(
+              edgeOffset: -500,
+              onRefresh: onRefresh,
+              child: FutureBuilder<List<Article>>(
+                future: futureUserArticles,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Article>> snapshot) {
+                  if (snapshot.hasData) {
+                    userArticles = snapshot.data as List<Article>;
+                    return UserPageArticleList(
+                        articles: userArticles, userId: widget.user.id);
+                  } else {
+                    return const CupertinoActivityIndicator();
+                  }
+                },
+              ),
             ),
           ),
         ),
