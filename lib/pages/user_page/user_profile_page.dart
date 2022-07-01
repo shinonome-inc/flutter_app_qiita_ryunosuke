@@ -5,9 +5,9 @@ import 'package:flutter_app_qiita/components/user_page_article_list.dart';
 import 'package:flutter_app_qiita/models/article.dart';
 import 'package:flutter_app_qiita/service/qiita_client.dart';
 
-import '../models/user.dart';
-import 'user_page/follow_page.dart';
-import 'user_page/follower_page.dart';
+import '../../models/user.dart';
+import 'follow_page.dart';
+import 'follower_page.dart';
 
 //Userのプロフィール表示用クラス
 //my_pageでは同じページに二つのクラスを書いていたがそれぞれ分けた

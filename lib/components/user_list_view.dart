@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_qiita/pages/user_page.dart';
+import 'package:flutter_app_qiita/pages/user_page/user_page.dart';
 
 import '../models/user.dart';
 

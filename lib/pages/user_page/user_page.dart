@@ -4,8 +4,8 @@ import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:flutter_app_qiita/pages/not_login_page.dart';
 import 'package:flutter_app_qiita/service/qiita_client.dart';
 
-import '../models/user.dart';
-import 'error_page.dart';
+import '../../models/user.dart';
+import '../error_page.dart';
 import 'user_profile_page.dart';
 
 class UserPage extends StatefulWidget {
