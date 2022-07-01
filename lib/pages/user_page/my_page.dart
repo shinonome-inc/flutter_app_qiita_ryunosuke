@@ -258,22 +258,31 @@ class _MyProfilePageState extends State<MyProfilePage> {
             ),
           ),
         ),
-        FutureBuilder<List<Article>>(
-          future: futureMyArticles,
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-            if (snapshot.hasData) {
-              myArticles = snapshot.data!;
-              return RefreshIndicator(
-                edgeOffset: -500,
-                onRefresh: onRefresh,
-                child: UserPageArticleList(
-                    articles: myArticles, userId: widget.user.id),
-              );
-            } else {
-              return const CupertinoActivityIndicator();
+        NotificationListener<ScrollEndNotification>(
+          onNotification: (notification) {
+            final metrics = notification.metrics;
+            if (metrics.extentAfter == 0) {
+              addItems(++page);
             }
+            return true;
           },
+          child: FutureBuilder<List<Article>>(
+            future: futureMyArticles,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
+              if (snapshot.hasData) {
+                myArticles = snapshot.data!;
+                return RefreshIndicator(
+                  edgeOffset: -500,
+                  onRefresh: onRefresh,
+                  child: UserPageArticleList(
+                      articles: myArticles, userId: widget.user.id),
+                );
+              } else {
+                return const CupertinoActivityIndicator();
+              }
+            },
+          ),
         ),
       ],
     );
