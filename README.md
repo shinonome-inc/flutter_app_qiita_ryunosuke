@@ -1,4 +1,4 @@
-# Qiita　api　を用いたFlutter製アプリケーション
+# Qiita app
 
 ## 注意点
 こちらのアプリではセキュリティ保護のためClientIDとSecretはgitの管理下から外しているため[こちら](https://drive.google.com/drive/folders/1G_aNWh-V-4yvdLMxzn9b7tOMuVVF1o8D)の方から.envファイルのダウンロードお願いします。
