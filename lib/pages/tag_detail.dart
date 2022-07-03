@@ -1,3 +1,4 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
@@ -31,7 +32,7 @@ class _TagDetailState extends State<TagDetail> {
   }
 
   Future<void> addTagDetailItems(int page) async {
-    var tagDetailItems = await QiitaClient.fetchArticle(page,'',tagId);
+    var tagDetailItems = await QiitaClient.fetchArticle(page, '', tagId);
     setState(() {
       articles.addAll(tagDetailItems);
     });
@@ -67,49 +68,67 @@ class _TagDetailState extends State<TagDetail> {
           }
           return true;
         },
-        child: RefreshIndicator(
-          onRefresh: onRefreshTagDetail,
-          child: FutureBuilder<List<dynamic>>(
-            future: futureArticles,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                articles = snapshot.data as List<Article>;
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 28,
-                        width: double.infinity,
-                        color: const Color(0xFFF2F2F2),
-                        child: const Padding(
-                          padding: EdgeInsets.only(top: 7, left: 12),
-                          child: Text(
-                            '投稿記事',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                            ),
+        child: FutureBuilder<List<dynamic>>(
+          future: futureArticles,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              articles = snapshot.data as List<Article>;
+              return SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 28,
+                      width: double.infinity,
+                      color: const Color(0xFFF2F2F2),
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 7, left: 12),
+                        child: Text(
+                          '投稿記事',
+                          style: TextStyle(
+                            fontSize: 12.0,
                           ),
                         ),
                       ),
-                      ArticleListView(articles: articles),
-                    ],
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                ErrorPage(
-                  onTapReload: reload,
-                );
-              }
-              return const Padding(
-                padding: EdgeInsets.only(top: 5.0),
-                child: Center(
-                  child: SizedBox(
-                      height: 30, width: 30, child: CupertinoActivityIndicator()),
+                    ),
+                    CustomRefreshIndicator(
+                      builder: (context, child, controller) => AnimatedBuilder(
+                        animation: controller,
+                        builder: (BuildContext context, _) {
+                          return Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                              if (!controller.isIdle)
+                                Positioned(
+                                    top: 50 * controller.value,
+                                    child: const CupertinoActivityIndicator()),
+                              Transform.translate(
+                                offset: Offset(0, 100.0 * controller.value),
+                                child: child,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      child: ArticleListView(articles: articles),
+                      onRefresh: onRefreshTagDetail,
+                    ),
+                  ],
                 ),
               );
-            },
-          ),
+            } else if (snapshot.hasError) {
+              ErrorPage(
+                onTapReload: reload,
+              );
+            }
+            return const Padding(
+              padding: EdgeInsets.only(top: 5.0),
+              child: Center(
+                child: SizedBox(
+                    height: 30, width: 30, child: CupertinoActivityIndicator()),
+              ),
+            );
+          },
         ),
       ),
     );

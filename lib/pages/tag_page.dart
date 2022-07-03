@@ -1,3 +1,4 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
@@ -60,33 +61,51 @@ class _TagPageState extends State<TagPage> {
           }
           return true;
         },
-        child: RefreshIndicator(
-          onRefresh: onRefreshTag,
-          edgeOffset: -500,
-          child: FutureBuilder<List<dynamic>>(
-            future: futureTag,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              int tagsNum = (MediaQuery.of(context).size.width ~/ 162);
-              if (snapshot.hasData) {
-                tags = snapshot.data;
-                return TagListView(
+        child: FutureBuilder<List<dynamic>>(
+          future: futureTag,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            int tagsNum = (MediaQuery.of(context).size.width ~/ 162);
+            if (snapshot.hasData) {
+              tags = snapshot.data;
+              return CustomRefreshIndicator(
+                onRefresh: onRefreshTag,
+                builder: (BuildContext context, Widget child,
+                    IndicatorController controller) {
+                  return AnimatedBuilder(
+                    animation: controller,
+                    builder: (BuildContext context, _) {
+                      return Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          if (!controller.isIdle)
+                            Positioned(
+                                top: 50 * controller.value,
+                                child: const CupertinoActivityIndicator()),
+                          Transform.translate(
+                            offset: Offset(0, 100.0 * controller.value),
+                            child: child,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: TagListView(
                   tags: tags,
                   tagsNum: tagsNum,
-                );
-              } else if (snapshot.hasError) {
-                return ErrorPage(onTapReload: reloadTag);
-              }
-              return const Padding(
-                padding: EdgeInsets.only(top: 5.0),
-                child: Center(
-                  child: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: CupertinoActivityIndicator()),
                 ),
               );
-            },
-          ),
+            } else if (snapshot.hasError) {
+              return ErrorPage(onTapReload: reloadTag);
+            }
+            return const Padding(
+              padding: EdgeInsets.only(top: 5.0),
+              child: Center(
+                child: SizedBox(
+                    height: 30, width: 30, child: CupertinoActivityIndicator()),
+              ),
+            );
+          },
         ),
       ),
     );
