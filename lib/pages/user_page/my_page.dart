@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
@@ -272,9 +273,29 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
               if (snapshot.hasData) {
                 myArticles = snapshot.data!;
-                return RefreshIndicator(
-                  edgeOffset: -500,
+                return CustomRefreshIndicator(
                   onRefresh: onRefresh,
+                  builder: (BuildContext context, Widget child,
+                      IndicatorController controller) {
+                    return AnimatedBuilder(
+                      animation: controller,
+                      builder: (BuildContext context, _) {
+                        return Stack(
+                          alignment: Alignment.topCenter,
+                          children: [
+                            if (!controller.isIdle)
+                              Positioned(
+                                  top: 50 * controller.value,
+                                  child: const CupertinoActivityIndicator()),
+                            Transform.translate(
+                              offset: Offset(0, 100.0 * controller.value),
+                              child: child,
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                   child: UserPageArticleList(
                       articles: myArticles, userId: widget.user.id),
                 );
