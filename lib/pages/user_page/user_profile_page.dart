@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/user_page_article_list.dart';
 import 'package:flutter_app_qiita/models/article.dart';
 import 'package:flutter_app_qiita/service/qiita_client.dart';
 
-import '../models/user.dart';
-import 'user_page/follow_page.dart';
-import 'user_page/follower_page.dart';
+import '../../models/user.dart';
+import 'follow_page.dart';
+import 'follower_page.dart';
 
 //Userのプロフィール表示用クラス
 //my_pageでは同じページに二つのクラスを書いていたがそれぞれ分けた
@@ -29,6 +30,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
     setState(() {
       userArticles.clear();
       userArticles.addAll(newItems);
+    });
+  }
+
+  Future<void> addItems(int page) async {
+    var items = await QiitaClient.fetchUserArticle(widget.user.id, page);
+    setState(() {
+      userArticles.addAll(items);
     });
   }
 
@@ -158,17 +166,49 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ),
         ),
         Expanded(
-          child: RefreshIndicator(
-            edgeOffset: -500,
-            onRefresh: onRefresh,
+          child: NotificationListener<ScrollEndNotification>(
+            onNotification: (notification) {
+              final metrics = notification.metrics;
+              if (metrics.extentAfter == 0) {
+                addItems(++page);
+              }
+              return true;
+            },
             child: FutureBuilder<List<Article>>(
               future: futureUserArticles,
               builder: (BuildContext context,
                   AsyncSnapshot<List<Article>> snapshot) {
                 if (snapshot.hasData) {
                   userArticles = snapshot.data as List<Article>;
-                  return UserPageArticleList(
-                      articles: userArticles, userId: widget.user.id);
+                  return CustomRefreshIndicator(
+                    onRefresh: onRefresh,
+                    builder: (
+                      BuildContext context,
+                      Widget child,
+                      IndicatorController controller,
+                    ) {
+                      return AnimatedBuilder(
+                        animation: controller,
+                        builder: (BuildContext context, _) {
+                          return Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                              if (!controller.isIdle)
+                                Positioned(
+                                    top: 50 * controller.value,
+                                    child: const CupertinoActivityIndicator()),
+                              Transform.translate(
+                                offset: Offset(0, 100.0 * controller.value),
+                                child: child,
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: UserPageArticleList(
+                        articles: userArticles, userId: widget.user.id),
+                  );
                 } else {
                   return const CupertinoActivityIndicator();
                 }

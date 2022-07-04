@@ -134,23 +134,6 @@ class QiitaClient {
     }
   }
 
-  static Future<List<Article>> fetchMyArticle(int page) async {
-    final accessToken = await getAccessToken();
-    var url = "https://qiita.com/api/v2/authenticated_user/items?page=$page";
-    final response = await http.get(
-      Uri.parse(url),
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> articleJsonArray = json.decode(response.body);
-      return articleJsonArray.map((json) => Article.fromJson(json)).toList();
-    } else {
-      throw Exception('Request failed with status: ${response.statusCode}');
-    }
-  }
-
   static Future<List<User>> fetchFollowees(String userId, int page) async {
     final accessToken = await getAccessToken();
     final url =
