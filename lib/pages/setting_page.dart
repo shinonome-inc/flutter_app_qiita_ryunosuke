@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:flutter_app_qiita/components/setting_page_item_component.dart';
+import 'package:flutter_app_qiita/service/qiita_client.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -10,6 +12,34 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  bool accessTokenIsSaved = false;
+  PackageInfo _packageInfo = PackageInfo(
+    appName: '',
+    packageName: '',
+    version: '',
+    buildNumber: '',
+    buildSignature: '',
+  );
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+  }
+
+  void confAccessTokenIsSaved() async {
+    accessTokenIsSaved = await QiitaClient.accessTokenIsSaved();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    confAccessTokenIsSaved();
+    _initPackageInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +71,11 @@ class _SettingPageState extends State<SettingPage> {
               color: Colors.grey,
             ),
           ),
-          const SettingPageItemComponent(
+          SettingPageItemComponent(
             text: 'アプリバージョン',
             item: Text(
-              'v1.0.0',
-              style: TextStyle(fontSize: 14.0, color: Colors.black),
+              'v' + _packageInfo.version,
+              style: const TextStyle(fontSize: 14.0, color: Colors.black),
             ),
           ),
           const SizedBox(
@@ -58,10 +88,11 @@ class _SettingPageState extends State<SettingPage> {
               style: TextStyle(color: Color(0xFF828282), fontSize: 12.0),
             ),
           ),
-          SettingPageItemComponent(
-            text: 'ログアウトする',
-            item: Container(),
-          )
+          if (accessTokenIsSaved)
+            SettingPageItemComponent(
+              text: 'ログアウトする',
+              item: Container(),
+            )
         ],
       ),
     );
