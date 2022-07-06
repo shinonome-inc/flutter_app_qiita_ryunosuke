@@ -27,21 +27,21 @@ class _SettingPageState extends State<SettingPage> {
               style: TextStyle(color: Color(0xFF828282), fontSize: 12.0),
             ),
           ),
-          const SettingPageItemComp(
+          const SettingPageItemComponent(
             text: 'プライバシーポリシー',
             item: Icon(
               Icons.arrow_forward_ios_outlined,
               color: Colors.grey,
             ),
           ),
-          const SettingPageItemComp(
+          const SettingPageItemComponent(
             text: '利用規約',
             item: Icon(
               Icons.arrow_forward_ios_outlined,
               color: Colors.grey,
             ),
           ),
-          const SettingPageItemComp(
+          const SettingPageItemComponent(
             text: 'アプリバージョン',
             item: Text(
               'v1.0.0',
@@ -58,7 +58,7 @@ class _SettingPageState extends State<SettingPage> {
               style: TextStyle(color: Color(0xFF828282), fontSize: 12.0),
             ),
           ),
-          SettingPageItemComp(
+          SettingPageItemComponent(
             text: 'ログアウトする',
             item: Container(),
           )

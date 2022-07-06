@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class SettingPageItemComp extends StatelessWidget {
+class SettingPageItemComponent extends StatelessWidget {
   final String text;
   final Widget item;
-  const SettingPageItemComp({Key? key, this.text = '', required this.item})
+  const SettingPageItemComponent({Key? key, this.text = '', required this.item})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration:
-          BoxDecoration(border: Border.all(color: const Color(0xFFE0E0E0))),
+      decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Color(0xFFE0E0E0)))),
       width: MediaQuery.of(context).size.width,
       height: 40,
       child: Row(
