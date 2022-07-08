@@ -16,7 +16,10 @@ class SettingPageItemComponent extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(text),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Text(text),
+          ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: item,
