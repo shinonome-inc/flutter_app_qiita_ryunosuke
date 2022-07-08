@@ -48,10 +48,10 @@ class _SettingPageState extends State<SettingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
-            height: 31.5,
+            height: 32.0,
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+            padding: EdgeInsets.only(left: 16.0, bottom: 8),
             child: Text(
               'アプリ情報',
               style: TextStyle(color: Color(0xFF828282), fontSize: 12.0),
@@ -79,10 +79,10 @@ class _SettingPageState extends State<SettingPage> {
             ),
           ),
           const SizedBox(
-            height: 38.0,
+            height: 36.0,
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+            padding: EdgeInsets.only(left: 16.0, bottom: 8),
             child: Text(
               'その他',
               style: TextStyle(color: Color(0xFF828282), fontSize: 12.0),
