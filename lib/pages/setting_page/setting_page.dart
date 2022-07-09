@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:flutter_app_qiita/components/setting_page_item_component.dart';
 import 'package:flutter_app_qiita/pages/setting_page/privacy_policy.dart';
+import 'package:flutter_app_qiita/pages/setting_page/terms_of_service.dart';
 import 'package:flutter_app_qiita/service/qiita_client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -87,7 +88,22 @@ class _SettingPageState extends State<SettingPage> {
               Icons.arrow_forward_ios_outlined,
               color: Colors.grey,
             ),
-            onTap: () {},
+            onTap: () {
+              showModalBottomSheet(
+                  enableDrag: true,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(10.0),
+                    ),
+                  ),
+                  context: context,
+                  builder: (context) {
+                    return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.95,
+                        child: const TermsOfService());
+                  });
+            },
           ),
           SettingPageItemComponent(
             text: 'アプリバージョン',

@@ -51,6 +51,7 @@ Qiita Feed Appではアプリの利便性向上を目的にして、個人を特
               style: TextStyle(
                 fontSize: 17,
                 color: Colors.black,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
