@@ -67,6 +67,7 @@ class _SettingPageState extends State<SettingPage> {
             ),
             onTap: () {
               showModalBottomSheet(
+                  useRootNavigator: true,
                   enableDrag: true,
                   isScrollControlled: true,
                   shape: const RoundedRectangleBorder(
@@ -90,6 +91,7 @@ class _SettingPageState extends State<SettingPage> {
             ),
             onTap: () {
               showModalBottomSheet(
+                  useRootNavigator: true,
                   enableDrag: true,
                   isScrollControlled: true,
                   shape: const RoundedRectangleBorder(
