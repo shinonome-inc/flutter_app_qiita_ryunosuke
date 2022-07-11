@@ -40,7 +40,7 @@ Qiita Feed Appではアプリの利便性向上を目的にして、個人を特
       children: [
         Container(
           decoration: const BoxDecoration(
-            color: Color(0XF9F9F9F0),
+            color: Color(0XFFF9F9F9),
             borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
           ),
           height: 59.0,

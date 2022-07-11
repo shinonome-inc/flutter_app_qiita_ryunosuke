@@ -58,7 +58,7 @@ MAIL: @shinonome.io
       children: [
         Container(
           decoration: const BoxDecoration(
-            color: Color(0XF9F9F9F0),
+            color: Color(0XFFF9F9F9),
             borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
           ),
           height: 59.0,
@@ -66,10 +66,10 @@ MAIL: @shinonome.io
             child: Text(
               "利用規約",
               style: TextStyle(
-                  fontSize: 17,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  ),
+                fontSize: 17,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
