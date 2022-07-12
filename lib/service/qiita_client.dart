@@ -75,7 +75,7 @@ class QiitaClient {
     String tagId,
   ) async {
     String url;
-    String? accessToken = await getAccessToken();
+
     if (query.isNotEmpty) {
       url = 'https://qiita.com/api/v2/items?page=$page&per_page=20&query=' +
           query +
@@ -88,7 +88,6 @@ class QiitaClient {
     final response = await http.get(
       Uri.parse(url),
       headers: {
-        if (accessToken!.isNotEmpty) 'Authorization': 'Bearer $accessToken',
         'content-type': 'application/json',
       },
     );
