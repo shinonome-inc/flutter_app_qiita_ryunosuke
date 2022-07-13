@@ -141,11 +141,13 @@ class _SettingPageState extends State<SettingPage> {
                               child: const Text('はい'),
                               onPressed: () {
                                 QiitaClient.deleteAccessToken();
-                                Navigator.push(
+                                Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
-                                        builder: ((context) =>
-                                            const TopPage(uri: null))));
+                                        builder: (context) => const TopPage(
+                                              uri: null,
+                                            )),
+                                    (_) => false);
                               },
                             ),
                             CupertinoDialogAction(
