@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:flutter_app_qiita/components/setting_page_item_component.dart';
 import 'package:flutter_app_qiita/pages/setting_page/privacy_policy.dart';
 import 'package:flutter_app_qiita/pages/setting_page/terms_of_service.dart';
+import 'package:flutter_app_qiita/pages/top_page.dart';
 import 'package:flutter_app_qiita/service/qiita_client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -129,7 +131,34 @@ class _SettingPageState extends State<SettingPage> {
             SettingPageItemComponent(
               text: 'ログアウトする',
               item: Container(),
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => CupertinoAlertDialog(
+                          title: const Text('ログアウトしますか'),
+                          actions: [
+                            CupertinoDialogAction(
+                              child: const Text('はい'),
+                              onPressed: () {
+                                QiitaClient.deleteAccessToken();
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const TopPage(
+                                              uri: null,
+                                            )),
+                                    (_) => false);
+                              },
+                            ),
+                            CupertinoDialogAction(
+                              child: const Text('いいえ'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ));
+              },
             )
         ],
       ),
