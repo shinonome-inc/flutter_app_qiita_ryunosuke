@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
+      WebViewPlus.platform = SurfaceAndroidWebView();
     }
   }
 
