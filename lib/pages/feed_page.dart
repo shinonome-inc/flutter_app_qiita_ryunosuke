@@ -22,6 +22,25 @@ class _FeedPageState extends State<FeedPage> {
   int page = 1;
   var textController = TextEditingController();
   bool isLoading = false;
+
+  Widget suffixIcon() {
+    if (textController.text.isNotEmpty) {
+      return IconButton(
+        icon: const Icon(
+          Icons.close,
+        ),
+        onPressed: () {
+          setState(() {
+            textController.text = '';
+            reloadArticle();
+          });
+        },
+      );
+    } else {
+      return Container();
+    }
+  }
+
   Widget textField() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -31,6 +50,7 @@ class _FeedPageState extends State<FeedPage> {
         autocorrect: true,
         controller: textController,
         decoration: InputDecoration(
+            suffixIcon: suffixIcon(),
             prefixIcon: const Icon(Icons.search),
             labelText: 'Search',
             filled: true,
