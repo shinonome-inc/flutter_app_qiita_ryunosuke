@@ -26,10 +26,10 @@ class _ArticleDetailState extends State<ArticleDetail> {
 
   @override
   void initState() {
-    super.initState();
     if (Platform.isAndroid) {
       WebViewPlus.platform = SurfaceAndroidWebView();
     }
+    super.initState();
   }
 
   @override

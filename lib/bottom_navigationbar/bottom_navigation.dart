@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/pages/feed_page.dart';
 import 'package:flutter_app_qiita/pages/user_page/my_page.dart';
 import 'package:flutter_app_qiita/pages/tag_page.dart';
+import 'package:flutter_app_qiita/service/qiita_client.dart';
 
 import '../pages/setting_page/setting_page.dart';
 
@@ -14,6 +15,19 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+  bool accessTokenIsSaved = false;
+
+  void confAccessTokenIsSaved() async {
+    accessTokenIsSaved = await QiitaClient.accessTokenIsSaved();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    confAccessTokenIsSaved();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -55,8 +69,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
             );
           case 2:
             return CupertinoTabView(
-              builder: (context) => const CupertinoPageScaffold(
-                child: Mypage(),
+              builder: (context) =>  CupertinoPageScaffold(
+                child: Mypage(accessTokenIsSaved: accessTokenIsSaved,),
               ),
             );
           case 3:
