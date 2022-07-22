@@ -11,7 +11,6 @@ import 'follow_page.dart';
 import 'follower_page.dart';
 
 //Userのプロフィール表示用クラス
-//my_pageでは同じページに二つのクラスを書いていたがそれぞれ分けた
 class UserProfilePage extends StatefulWidget {
   final User user;
   const UserProfilePage({Key? key, required this.user}) : super(key: key);

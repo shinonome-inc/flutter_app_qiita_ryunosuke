@@ -1,3 +1,4 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
@@ -52,7 +53,25 @@ class _FollowerPageState extends State<FollowerPage> {
           }
           return true;
         },
-        child: RefreshIndicator(
+        child: CustomRefreshIndicator(
+          builder: (context, child, controller) => AnimatedBuilder(
+            animation: controller,
+            builder: (BuildContext context, _) {
+              return Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  if (!controller.isIdle)
+                    Positioned(
+                        top: 50 * controller.value,
+                        child: const CupertinoActivityIndicator()),
+                  Transform.translate(
+                    offset: Offset(0, 100.0 * controller.value),
+                    child: child,
+                  ),
+                ],
+              );
+            },
+          ),
           onRefresh: onRefresh,
           child: FutureBuilder<List<User>>(
             future: futureFollowerList,
