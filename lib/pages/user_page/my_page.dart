@@ -79,10 +79,8 @@ class _MypageState extends State<Mypage> {
           ],
         ),
       );
-    } else if (widget.accessTokenIsSaved == false) {
-      return const NotLoginPage();
     } else {
-      return Container();
+      return const NotLoginPage();
     }
   }
 }
