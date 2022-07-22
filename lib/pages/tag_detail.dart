@@ -91,27 +91,31 @@ class _TagDetailState extends State<TagDetail> {
                         ),
                       ),
                     ),
-                    CustomRefreshIndicator(
-                      builder: (context, child, controller) => AnimatedBuilder(
-                        animation: controller,
-                        builder: (BuildContext context, _) {
-                          return Stack(
-                            alignment: Alignment.topCenter,
-                            children: [
-                              if (!controller.isIdle)
-                                Positioned(
-                                    top: 50 * controller.value,
-                                    child: const CupertinoActivityIndicator()),
-                              Transform.translate(
-                                offset: Offset(0, 100.0 * controller.value),
-                                child: child,
-                              ),
-                            ],
-                          );
-                        },
+                    Expanded(
+                      child: CustomRefreshIndicator(
+                        builder: (context, child, controller) =>
+                            AnimatedBuilder(
+                          animation: controller,
+                          builder: (BuildContext context, _) {
+                            return Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                if (!controller.isIdle)
+                                  Positioned(
+                                      top: 50 * controller.value,
+                                      child:
+                                          const CupertinoActivityIndicator()),
+                                Transform.translate(
+                                  offset: Offset(0, 100.0 * controller.value),
+                                  child: child,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        child: ArticleListView(articles: articles),
+                        onRefresh: onRefreshTagDetail,
                       ),
-                      child: ArticleListView(articles: articles),
-                      onRefresh: onRefreshTagDetail,
                     ),
                   ],
                 ),

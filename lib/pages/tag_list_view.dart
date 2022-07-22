@@ -34,12 +34,17 @@ class _TagListViewState extends State<TagListView> {
                 width: 38.0,
                 child: CachedNetworkImage(
                   imageUrl: tag.iconUrl,
-                  placeholder: (context, url) =>
-                      const CupertinoActivityIndicator(),
+                  placeholder: (context, url) => const SizedBox(
+                      width: 38.0,
+                      height: 38.0,
+                      child: CupertinoActivityIndicator()),
                   errorWidget: (context, url, error) => Container(
+                    width: 38.0,
+                    height: 38.0,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage('images/default_icon_image.png'),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),

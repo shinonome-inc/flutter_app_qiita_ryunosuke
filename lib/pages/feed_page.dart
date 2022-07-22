@@ -154,8 +154,10 @@ class _FeedPageState extends State<FeedPage> {
                   return Column(
                     children: [
                       const Divider(color: Colors.black),
-                      ArticleListView(
-                        articles: articles,
+                      Expanded(
+                        child: ArticleListView(
+                          articles: articles,
+                        ),
                       ),
                     ],
                   );
