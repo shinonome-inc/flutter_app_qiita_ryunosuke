@@ -107,12 +107,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
         children: <Widget>[
           TextButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => FollowPage(
-                            user: widget.user,
-                          ))));
+              if (widget.user.followingsCount > 0) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => FollowPage(
+                              user: widget.user,
+                            ))));
+              }
             },
             child: Text(widget.user.followingsCount.toString() + 'フォロー中'),
             style: TextButton.styleFrom(
@@ -122,10 +124,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
           const SizedBox(height: 4.0),
           TextButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => FollowerPage(user: widget.user))));
+              if (widget.user.followersCount > 0) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) =>
+                            FollowerPage(user: widget.user))));
+              }
             },
             child: Text(widget.user.followersCount.toString() + 'フォロワー'),
             style: TextButton.styleFrom(
