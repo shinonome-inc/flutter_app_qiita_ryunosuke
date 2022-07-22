@@ -23,7 +23,6 @@ class _ArticleListViewState extends State<ArticleListView> {
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
       itemCount: widget.articles.length,
       itemBuilder: (context, index) {
         final article = widget.articles[index];
