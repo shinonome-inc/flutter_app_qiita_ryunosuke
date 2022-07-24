@@ -10,16 +10,14 @@ import '../../../service/qiita_client.dart';
 import '../error_page.dart';
 
 class Mypage extends StatefulWidget {
-  const Mypage({
-    Key? key,
-  }) : super(key: key);
+  final bool accessTokenIsSaved;
+  const Mypage({Key? key, required this.accessTokenIsSaved}) : super(key: key);
   @override
   _MypageState createState() => _MypageState();
 }
 
 class _MypageState extends State<Mypage> {
   Future<User>? myProfile;
-  bool accessTokenIsSaved = false;
   late User? user;
 
   int page = 1;
@@ -36,21 +34,10 @@ class _MypageState extends State<Mypage> {
     });
   }
 
-  void confAccessTokenIsSaved() async {
-    accessTokenIsSaved = await QiitaClient.accessTokenIsSaved();
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    confAccessTokenIsSaved();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    if (accessTokenIsSaved) {
+    if (widget.accessTokenIsSaved) {
       myProfile = QiitaClient.fetchMyProfile();
       return Scaffold(
         appBar: AppBarDesign(text: 'MyPage'),

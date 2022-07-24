@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/pages/top_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 import '../service/qiita_client.dart';
@@ -53,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
+      WebViewPlus.platform = SurfaceAndroidWebView();
     }
   }
 

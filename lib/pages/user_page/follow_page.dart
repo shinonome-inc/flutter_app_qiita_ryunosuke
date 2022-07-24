@@ -72,10 +72,6 @@ class _FollowPageState extends State<FollowPage> {
                         QiitaClient.fetchFollowees(widget.user.id, 1);
                   });
                 });
-              } else if (snapshot.data?.isEmpty == true) {
-                return const Center(
-                  child: Text('フォローなし'),
-                );
               }
               return const Padding(
                 padding: EdgeInsets.only(top: 5.0),
