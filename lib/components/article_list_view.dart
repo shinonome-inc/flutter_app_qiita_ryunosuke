@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../models/article.dart';
 import '../pages/article_detail.dart';
@@ -97,15 +98,11 @@ class _ArticleListViewState extends State<ArticleListView> {
             ),
           ),
           onTap: () {
-            showModalBottomSheet(
+            showCupertinoModalBottomSheet(
+              useRootNavigator: true,
               context: context,
               enableDrag: true,
-              isScrollControlled: true,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(10.0),
-                ),
-              ),
+              shape: const RoundedRectangleBorder(),
               builder: (context) {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height * 0.95,

@@ -32,7 +32,7 @@ class _FeedPageState extends State<FeedPage> {
         onPressed: () {
           setState(() {
             textController.text = '';
-            reloadArticle();
+            reloadArticle(); 
           });
         },
       );
