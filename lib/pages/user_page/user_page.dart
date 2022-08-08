@@ -54,7 +54,6 @@ class _UserPageState extends State<UserPage> {
       return Scaffold(
         appBar: AppBarDesign(
           text: 'User',
-          useBackButton: true,
         ),
         body: Column(
           children: [
