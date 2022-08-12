@@ -23,6 +23,7 @@ class _ArticleListViewState extends State<ArticleListView> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       shrinkWrap: true,
       itemCount: widget.articles.length,
       itemBuilder: (context, index) {
