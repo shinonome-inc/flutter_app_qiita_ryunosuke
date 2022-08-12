@@ -118,6 +118,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             child: Text(widget.user.followingsCount.toString() + 'フォロー中'),
             style: TextButton.styleFrom(
               primary: Colors.black,
+              padding: const EdgeInsets.all(0),
             ),
           ),
           const SizedBox(height: 4.0),
