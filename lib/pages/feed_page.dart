@@ -32,7 +32,7 @@ class _FeedPageState extends State<FeedPage> {
         onPressed: () {
           setState(() {
             textController.text = '';
-            reloadArticle(); 
+            reloadArticle();
           });
         },
       );
@@ -71,7 +71,7 @@ class _FeedPageState extends State<FeedPage> {
 
   PreferredSize? feedAppBar() {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(100),
+      preferredSize: const Size.fromHeight(110),
       child: Center(
         child: Column(
           children: [
@@ -79,6 +79,7 @@ class _FeedPageState extends State<FeedPage> {
               text: 'Feed',
             ),
             textField(),
+            const Divider(color: Colors.black),
           ],
         ),
       ),
@@ -153,7 +154,6 @@ class _FeedPageState extends State<FeedPage> {
                   articles = snapshot.data as List<Article>;
                   return Column(
                     children: [
-                      const Divider(color: Colors.black),
                       Expanded(
                         child: ArticleListView(
                           articles: articles,
