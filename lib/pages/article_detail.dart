@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_app_qiita/components/appbar_design.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 import '../models/article.dart';
@@ -34,37 +34,22 @@ class _ArticleDetailState extends State<ArticleDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
-            ),
-            height: 59.0,
-            child: Center(
-              child: Text(
-                "Article",
-                style: GoogleFonts.pacifico(
-                  fontSize: 17,
-                  color: Colors.black,
-                ),
-              ),
-            ),
+    return Scaffold(
+      appBar: AppBarDesign(
+        text: 'Article',
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: _webViewHeight,
+          child: WebViewPlus(
+            initialUrl: widget.article.url,
+            javascriptMode: JavascriptMode.unrestricted,
+            onPageFinished: (String url) => onPageFinished(context, url),
+            onWebViewCreated: (WebViewPlusController controller) {
+              _controller = controller;
+            },
           ),
-          SizedBox(
-            height: _webViewHeight,
-            child: WebViewPlus(
-              initialUrl: widget.article.url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (String url) => onPageFinished(context, url),
-              onWebViewCreated: (WebViewPlusController controller) {
-                _controller = controller;
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
