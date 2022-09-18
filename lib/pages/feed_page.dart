@@ -152,14 +152,8 @@ class _FeedPageState extends State<FeedPage> {
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   articles = snapshot.data as List<Article>;
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: ArticleListView(
-                          articles: articles,
-                        ),
-                      ),
-                    ],
+                  return ArticleListView(
+                    articles: articles,
                   );
                 } else if (snapshot.hasError) {
                   return ErrorPage(

@@ -67,33 +67,29 @@ class _ArticleListViewState extends State<ArticleListView> {
           ),
           subtitle: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Column(
+            child: Row(
               children: [
-                Row(
-                  children: [
-                    Text(
-                      '@' + article.user.id,
-                      style: const TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                    const SizedBox(width: 3.0),
-                    Text(
-                      '投稿日:' + DateFormat('yyyy/M/d').format(dateTime),
-                      style: const TextStyle(
-                        fontSize: 12,
-                      ),
-                      strutStyle: const StrutStyle(height: 1.3),
-                    ),
-                    const SizedBox(width: 3.0),
-                    Text(
-                      'LGTM:' + article.likesCount.toString(),
-                      style: const TextStyle(
-                        fontSize: 12,
-                      ),
-                      strutStyle: const StrutStyle(height: 1.3),
-                    ),
-                  ],
+                Text(
+                  '@' + article.user.id,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(width: 3.0),
+                Text(
+                  '投稿日:' + DateFormat('yyyy/M/d').format(dateTime),
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                  strutStyle: const StrutStyle(height: 1.3),
+                ),
+                const SizedBox(width: 3.0),
+                Text(
+                  'LGTM:' + article.likesCount.toString(),
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                  strutStyle: const StrutStyle(height: 1.3),
                 ),
               ],
             ),
