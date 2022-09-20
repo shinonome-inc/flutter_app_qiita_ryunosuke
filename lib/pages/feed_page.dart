@@ -122,63 +122,65 @@ class _FeedPageState extends State<FeedPage> {
             height: 1.0,
             color: Colors.black,
           ),
-          Container(
-            color: Colors.white,
-            child: NotificationListener<ScrollEndNotification>(
-              onNotification: (notification) {
-                final metrics = notification.metrics;
-                if (metrics.extentAfter == 0) {
-                  addItems(++page);
-                }
-                return true;
-              },
-              child: CustomRefreshIndicator(
-                builder: (context, child, controller) => AnimatedBuilder(
-                  animation: controller,
-                  builder: (BuildContext context, _) {
-                    return Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        if (!controller.isIdle)
-                          Positioned(
-                              top: 50 * controller.value,
-                              child: const CupertinoActivityIndicator()),
-                        Transform.translate(
-                          offset: Offset(0, 100.0 * controller.value),
-                          child: child,
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              child: NotificationListener<ScrollEndNotification>(
+                onNotification: (notification) {
+                  final metrics = notification.metrics;
+                  if (metrics.extentAfter == 0) {
+                    addItems(++page);
+                  }
+                  return true;
+                },
+                child: CustomRefreshIndicator(
+                  builder: (context, child, controller) => AnimatedBuilder(
+                    animation: controller,
+                    builder: (BuildContext context, _) {
+                      return Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          if (!controller.isIdle)
+                            Positioned(
+                                top: 50 * controller.value,
+                                child: const CupertinoActivityIndicator()),
+                          Transform.translate(
+                            offset: Offset(0, 100.0 * controller.value),
+                            child: child,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  onRefresh: onRefresh,
+                  child: FutureBuilder<List>(
+                    future: futureArticles,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                        articles = snapshot.data as List<Article>;
+                        return ArticleListView(
+                          articles: articles,
+                        );
+                      } else if (snapshot.hasError) {
+                        return ErrorPage(
+                          onTapReload: () {
+                            reloadArticle();
+                          },
+                        );
+                      } else if (searchWord.isNotEmpty) {
+                        return searchError();
+                      }
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 5.0),
+                        child: Center(
+                          child: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CupertinoActivityIndicator()),
                         ),
-                      ],
-                    );
-                  },
-                ),
-                onRefresh: onRefresh,
-                child: FutureBuilder<List>(
-                  future: futureArticles,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                      articles = snapshot.data as List<Article>;
-                      return ArticleListView(
-                        articles: articles,
                       );
-                    } else if (snapshot.hasError) {
-                      return ErrorPage(
-                        onTapReload: () {
-                          reloadArticle();
-                        },
-                      );
-                    } else if (searchWord.isNotEmpty) {
-                      return searchError();
-                    }
-                    return const Padding(
-                      padding: EdgeInsets.only(top: 5.0),
-                      child: Center(
-                        child: SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: CupertinoActivityIndicator()),
-                      ),
-                    );
-                  },
+                    },
+                  ),
                 ),
               ),
             ),
