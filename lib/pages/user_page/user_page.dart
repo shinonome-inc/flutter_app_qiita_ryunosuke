@@ -53,7 +53,7 @@ class _UserPageState extends State<UserPage> {
       userProfile = QiitaClient.fetchUserProfile(widget.user.id);
       return Scaffold(
         appBar: AppBarDesign(
-          text: 'User',
+          text: 'Users',
           useBackButton: true,
         ),
         body: Column(

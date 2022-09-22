@@ -11,7 +11,6 @@ import 'follow_page.dart';
 import 'follower_page.dart';
 
 //Userのプロフィール表示用クラス
-//my_pageでは同じページに二つのクラスを書いていたがそれぞれ分けた
 class UserProfilePage extends StatefulWidget {
   final User user;
   const UserProfilePage({Key? key, required this.user}) : super(key: key);
@@ -107,25 +106,31 @@ class _UserProfilePageState extends State<UserProfilePage> {
         children: <Widget>[
           TextButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => FollowPage(
-                            user: widget.user,
-                          ))));
+              if (widget.user.followingsCount > 0) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => FollowPage(
+                              user: widget.user,
+                            ))));
+              }
             },
             child: Text(widget.user.followingsCount.toString() + 'フォロー中'),
             style: TextButton.styleFrom(
               primary: Colors.black,
+              padding: const EdgeInsets.all(0),
             ),
           ),
           const SizedBox(height: 4.0),
           TextButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => FollowerPage(user: widget.user))));
+              if (widget.user.followersCount > 0) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) =>
+                            FollowerPage(user: widget.user))));
+              }
             },
             child: Text(widget.user.followersCount.toString() + 'フォロワー'),
             style: TextButton.styleFrom(

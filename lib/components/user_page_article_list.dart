@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/models/article.dart';
 import 'package:flutter_app_qiita/pages/article_detail.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 //画像を取り除いたMypageやUserPage用ArticleList
 class UserPageArticleList extends StatefulWidget {
@@ -64,10 +65,10 @@ class _UserPageArticleListState extends State<UserPageArticleList> {
             ],
           ),
           onTap: () {
-            showModalBottomSheet(
+            showCupertinoModalBottomSheet(
+              useRootNavigator: true,
               context: context,
               enableDrag: true,
-              isScrollControlled: true,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(10.0),

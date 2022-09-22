@@ -120,13 +120,14 @@ class _SettingPageState extends State<SettingPage> {
           const SizedBox(
             height: 36.0,
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 16.0, bottom: 8),
-            child: Text(
-              'その他',
-              style: TextStyle(color: Color(0xFF828282), fontSize: 12.0),
+          if (accessTokenIsSaved)
+            const Padding(
+              padding: EdgeInsets.only(left: 16.0, bottom: 8),
+              child: Text(
+                'その他',
+                style: TextStyle(color: Color(0xFF828282), fontSize: 12.0),
+              ),
             ),
-          ),
           if (accessTokenIsSaved)
             SettingPageItemComponent(
               text: 'ログアウトする',
