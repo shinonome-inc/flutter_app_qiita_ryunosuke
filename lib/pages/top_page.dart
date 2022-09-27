@@ -113,7 +113,7 @@ class _TopPageState extends State<TopPage> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.lightGreen[900],
+                      backgroundColor: Colors.lightGreen[900],
                       shape: const StadiumBorder(),
                     ),
                   ),
@@ -125,11 +125,12 @@ class _TopPageState extends State<TopPage> {
                   width: MediaQuery.of(context).size.width,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const BottomNavigation(),
                         ),
+                        (_) => false,
                       );
                     },
                     child: const Text(
