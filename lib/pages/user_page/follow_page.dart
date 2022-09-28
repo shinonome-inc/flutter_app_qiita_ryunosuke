@@ -1,3 +1,4 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/components/appbar_design.dart';
@@ -56,8 +57,25 @@ class _FollowPageState extends State<FollowPage> {
           }
           return true;
         },
-        child: RefreshIndicator(
-          edgeOffset: -500,
+        child: CustomRefreshIndicator(
+          builder: (context, child, controller) => AnimatedBuilder(
+            animation: controller,
+            builder: (BuildContext context, _) {
+              return Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  if (!controller.isIdle)
+                    Positioned(
+                        top: 50 * controller.value,
+                        child: const CupertinoActivityIndicator()),
+                  Transform.translate(
+                    offset: Offset(0, 100.0 * controller.value),
+                    child: child,
+                  ),
+                ],
+              );
+            },
+          ),
           onRefresh: onRefresh,
           child: FutureBuilder<List<User>>(
             future: futureFolloweesList,
@@ -72,10 +90,6 @@ class _FollowPageState extends State<FollowPage> {
                         QiitaClient.fetchFollowees(widget.user.id, 1);
                   });
                 });
-              } else if (snapshot.data?.isEmpty == true) {
-                return const Center(
-                  child: Text('フォローなし'),
-                );
               }
               return const Padding(
                 padding: EdgeInsets.only(top: 5.0),

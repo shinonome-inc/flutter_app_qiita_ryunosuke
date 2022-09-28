@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_qiita/pages/feed_page.dart';
 import 'package:flutter_app_qiita/pages/user_page/my_page.dart';
 import 'package:flutter_app_qiita/pages/tag_page.dart';
+import 'package:flutter_app_qiita/service/qiita_client.dart';
 
 import '../pages/setting_page/setting_page.dart';
 
@@ -14,8 +15,22 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+
   Future<bool> _onWillPop() async {
     return true;
+    }
+
+  bool accessTokenIsSaved = false;
+
+  void confAccessTokenIsSaved() async {
+    accessTokenIsSaved = await QiitaClient.accessTokenIsSaved();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    confAccessTokenIsSaved();
+    super.initState();
   }
 
   @override
@@ -76,6 +91,36 @@ class _BottomNavigationState extends State<BottomNavigation> {
           }
         },
       ),
+      tabBuilder: (BuildContext context, int index) {
+        switch (index) {
+          case 0:
+            return CupertinoTabView(
+              builder: (context) => const CupertinoPageScaffold(
+                child: FeedPage(),
+              ),
+            );
+          case 1:
+            return CupertinoTabView(
+              builder: (context) => const CupertinoPageScaffold(
+                child: TagPage(),
+              ),
+            );
+          case 2:
+            return CupertinoTabView(
+              builder: (context) =>  CupertinoPageScaffold(
+                child: Mypage(accessTokenIsSaved: accessTokenIsSaved,),
+              ),
+            );
+          case 3:
+            return CupertinoTabView(
+              builder: (context) => const CupertinoPageScaffold(
+                child: SettingPage(),
+              ),
+            );
+          default:
+            return Container();
+        }
+      },
     );
   }
 }

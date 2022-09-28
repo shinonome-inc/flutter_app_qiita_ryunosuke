@@ -22,6 +22,25 @@ class _FeedPageState extends State<FeedPage> {
   int page = 1;
   var textController = TextEditingController();
   bool isLoading = false;
+
+  Widget suffixIcon() {
+    if (textController.text.isNotEmpty) {
+      return IconButton(
+        icon: const Icon(
+          Icons.close,
+        ),
+        onPressed: () {
+          setState(() {
+            textController.text = '';
+            reloadArticle();
+          });
+        },
+      );
+    } else {
+      return Container();
+    }
+  }
+
   Widget textField() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -31,6 +50,7 @@ class _FeedPageState extends State<FeedPage> {
         autocorrect: true,
         controller: textController,
         decoration: InputDecoration(
+            suffixIcon: suffixIcon(),
             prefixIcon: const Icon(Icons.search),
             labelText: 'Search',
             filled: true,
@@ -96,71 +116,76 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: feedAppBar(),
-      body: Container(
-        color: Colors.white,
-        child: NotificationListener<ScrollEndNotification>(
-          onNotification: (notification) {
-            final metrics = notification.metrics;
-            if (metrics.extentAfter == 0) {
-              addItems(++page);
-            }
-            return true;
-          },
-          child: CustomRefreshIndicator(
-            builder: (context, child, controller) => AnimatedBuilder(
-              animation: controller,
-              builder: (BuildContext context, _) {
-                return Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    if (!controller.isIdle)
-                      Positioned(
-                          top: 50 * controller.value,
-                          child: const CupertinoActivityIndicator()),
-                    Transform.translate(
-                      offset: Offset(0, 100.0 * controller.value),
-                      child: child,
-                    ),
-                  ],
-                );
-              },
-            ),
-            onRefresh: onRefresh,
-            child: FutureBuilder<List>(
-              future: futureArticles,
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  articles = snapshot.data as List<Article>;
-                  return Column(
-                    children: [
-                      const Divider(color: Colors.black),
-                      ArticleListView(
-                        articles: articles,
-                      ),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return ErrorPage(
-                    onTapReload: () {
-                      reloadArticle();
+      body: Column(
+        children: [
+          const Divider(
+            height: 1.0,
+            color: Colors.black,
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              child: NotificationListener<ScrollEndNotification>(
+                onNotification: (notification) {
+                  final metrics = notification.metrics;
+                  if (metrics.extentAfter == 0) {
+                    addItems(++page);
+                  }
+                  return true;
+                },
+                child: CustomRefreshIndicator(
+                  builder: (context, child, controller) => AnimatedBuilder(
+                    animation: controller,
+                    builder: (BuildContext context, _) {
+                      return Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          if (!controller.isIdle)
+                            Positioned(
+                                top: 50 * controller.value,
+                                child: const CupertinoActivityIndicator()),
+                          Transform.translate(
+                            offset: Offset(0, 100.0 * controller.value),
+                            child: child,
+                          ),
+                        ],
+                      );
                     },
-                  );
-                } else if (searchWord.isNotEmpty) {
-                  return searchError();
-                }
-                return const Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Center(
-                    child: SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: CupertinoActivityIndicator()),
                   ),
-                );
-              },
+                  onRefresh: onRefresh,
+                  child: FutureBuilder<List>(
+                    future: futureArticles,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                        articles = snapshot.data as List<Article>;
+                        return ArticleListView(
+                          articles: articles,
+                        );
+                      } else if (snapshot.hasError) {
+                        return ErrorPage(
+                          onTapReload: () {
+                            reloadArticle();
+                          },
+                        );
+                      } else if (searchWord.isNotEmpty) {
+                        return searchError();
+                      }
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 5.0),
+                        child: Center(
+                          child: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CupertinoActivityIndicator()),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
